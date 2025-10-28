@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<coverage generated="1761637367399" clover="3.2.0">
-  <project timestamp="1761637367399" name="All files">
+<coverage generated="1761638080723" clover="3.2.0">
+  <project timestamp="1761638080723" name="All files">
     <metrics statements="21" coveredstatements="21" conditionals="22" coveredconditionals="22" methods="2" coveredmethods="2" elements="45" coveredelements="45" complexity="0" loc="21" ncloc="21" packages="1" files="2" classes="2"/>
     <file name="validatePassword.js" path="C:\Users\phamh\OneDrive\Máy tính\DoAN_SWT\KiemThuPhanMem\fontend\src\utils\validation\validatePassword.js">
       <metrics statements="11" coveredstatements="11" conditionals="12" coveredconditionals="12" methods="1" coveredmethods="1"/>
