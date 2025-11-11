@@ -21,6 +21,15 @@
   color: #333;
 }
 
+.error-message {
+  background: #f8d7da;
+  color: #721c24;
+  padding: 12px;
+  border-radius: 4px;
+  margin-bottom: 15px;
+  border: 1px solid #f5c6cb;
+}
+
 .auth-box form {
   display: flex;
   flex-direction: column;
@@ -52,8 +61,13 @@
   transition: background 0.3s;
 }
 
-.auth-box button:hover {
+.auth-box button:hover:not(:disabled) {
   background: #764ba2;
+}
+
+.auth-box button:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
 }
 
 .auth-box p {
