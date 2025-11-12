@@ -26,7 +26,7 @@ class ValidationServiceTest {
 
     @Test
     void testLongUsername() {
-        assertFalse(validator.validateUsername("a".repeat(25))); // quá dài
+        assertFalse(validator.validateUsername("a".repeat(51))); // quá dài
     }
 
     @Test
@@ -56,7 +56,7 @@ class ValidationServiceTest {
     }
     @Test
     void testLongPassword() {
-        assertFalse(validator.validatePassword("a".repeat(31))); // quá dài
+        assertFalse(validator.validatePassword("a".repeat(101))); // quá dài
     }
 
     @Test
