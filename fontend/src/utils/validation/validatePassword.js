@@ -7,8 +7,8 @@ export function validatePassword(password) {
     return { valid: false, message: "Mat khau qua ngan (toi thieu 6 ky tu)" };
   }
 
-  if (password.length > 20) {
-    return { valid: false, message: "Mat khau qua dai (toi da 20 ky tu)" };
+  if (password.length > 100) {
+    return { valid: false, message: "Mat khau qua dai (toi da 100 ky tu)" };
   }
 
   const hasLetter = /[a-zA-Z]/.test(password);//có ít nhát 1 kí tự

@@ -15,9 +15,9 @@ describe("validateUsername()", () => {
   });
 
   test("should fail when username is too long", () => {
-    const result = validateUsername("a".repeat(25));
+    const result = validateUsername("a".repeat(51));
     expect(result.valid).toBe(false);
-    expect(result.message).toBe("Ten nguoi dung khong duoc vuot qua 20 ky tu");
+    expect(result.message).toBe("Ten nguoi dung khong duoc vuot qua 50 ky tu");
   });
 
   test("should fail when username contains invalid characters", () => {

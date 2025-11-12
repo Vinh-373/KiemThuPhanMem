@@ -14,9 +14,9 @@ describe("validatePassword()", () => {
   });
 
   test("should fail when password is too long", () => {
-    const result = validatePassword("a1".repeat(11)); // 22 kí tự
+    const result = validatePassword("a1".repeat(51)); // 102 kí tự
     expect(result.valid).toBe(false);
-    expect(result.message).toBe("Mat khau qua dai (toi da 20 ky tu)");
+    expect(result.message).toBe("Mat khau qua dai (toi da 100 ky tu)");
   });
 
   test("should fail when password has no number", () => {
