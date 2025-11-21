@@ -7,7 +7,7 @@ on:
   pull_request:
 
 jobs:
-  build-fontend:
+  build-frontend:
     runs-on: ubuntu-latest
     container:
       image: node:20
@@ -15,13 +15,13 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v4
 
-      - name: Install fontend dependencies
+      - name: Install frontend dependencies
         run: npm install
-        working-directory: ./fontend
+        working-directory: ./frontend
 
-      - name: Build fontend
+      - name: Build frontend
         run: npm run build
-        working-directory: ./fontend
+        working-directory: ./frontend
 
       - name: Upload Cypress screenshots
         uses: actions/upload-artifact@v4
