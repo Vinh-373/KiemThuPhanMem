@@ -1,6 +1,6 @@
 package com.flogin.service;
 
-import com.flogin.service.AuthService;
+//import com.flogin.service.AuthService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
