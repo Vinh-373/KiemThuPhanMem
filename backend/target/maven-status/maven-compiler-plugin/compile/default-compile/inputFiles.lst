@@ -1,8 +1,14 @@
-D:\KTPM\Assignment2\backend\src\main\java\com\flogin\App.java
-D:\KTPM\Assignment2\backend\src\main\java\com\flogin\controller\AuthController.java
-D:\KTPM\Assignment2\backend\src\main\java\com\flogin\entity\Product.java
-D:\KTPM\Assignment2\backend\src\main\java\com\flogin\repository\UserRepository.java
-D:\KTPM\Assignment2\backend\src\main\java\com\flogin\dto\LoginRequest.java
-D:\KTPM\Assignment2\backend\src\main\java\com\flogin\entity\User.java
-D:\KTPM\Assignment2\backend\src\main\java\com\flogin\dto\RegisterRequest.java
-D:\KTPM\Assignment2\backend\src\main\java\com\flogin\repository\ProductRepository.java
+C:\Users\phamh\OneDrive\Máy tính\DoAN_SWT\KiemThuPhanMem\backend\src\main\java\com\flogin\controller\AuthController.java
+C:\Users\phamh\OneDrive\Máy tính\DoAN_SWT\KiemThuPhanMem\backend\src\main\java\com\flogin\repository\UserRepository.java
+C:\Users\phamh\OneDrive\Máy tính\DoAN_SWT\KiemThuPhanMem\backend\src\main\java\com\flogin\service\AuthService.java
+C:\Users\phamh\OneDrive\Máy tính\DoAN_SWT\KiemThuPhanMem\backend\src\main\java\com\flogin\config\CorsConfig.java
+C:\Users\phamh\OneDrive\Máy tính\DoAN_SWT\KiemThuPhanMem\backend\src\main\java\com\flogin\dto\LoginResponse.java
+C:\Users\phamh\OneDrive\Máy tính\DoAN_SWT\KiemThuPhanMem\backend\src\main\java\com\flogin\App.java
+C:\Users\phamh\OneDrive\Máy tính\DoAN_SWT\KiemThuPhanMem\backend\src\main\java\com\flogin\entity\User.java
+C:\Users\phamh\OneDrive\Máy tính\DoAN_SWT\KiemThuPhanMem\backend\src\main\java\com\flogin\service\ValidationService.java
+C:\Users\phamh\OneDrive\Máy tính\DoAN_SWT\KiemThuPhanMem\backend\src\main\java\com\flogin\dto\UserDTO.java
+C:\Users\phamh\OneDrive\Máy tính\DoAN_SWT\KiemThuPhanMem\backend\src\main\java\com\flogin\dto\RegisterRequest.java
+C:\Users\phamh\OneDrive\Máy tính\DoAN_SWT\KiemThuPhanMem\backend\src\main\java\com\flogin\repository\ProductRepository.java
+C:\Users\phamh\OneDrive\Máy tính\DoAN_SWT\KiemThuPhanMem\backend\src\main\java\com\flogin\config\SecurityConfig.java
+C:\Users\phamh\OneDrive\Máy tính\DoAN_SWT\KiemThuPhanMem\backend\src\main\java\com\flogin\dto\LoginRequest.java
+C:\Users\phamh\OneDrive\Máy tính\DoAN_SWT\KiemThuPhanMem\backend\src\main\java\com\flogin\entity\Product.java
