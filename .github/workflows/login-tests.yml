@@ -28,6 +28,7 @@ jobs:
 
       - name: Run Login E2E Tests
         run: |
+          cd frontend
           npx cypress run --spec "cypress/e2e/login.e2e.spec.js"
 
 
