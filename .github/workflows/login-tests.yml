@@ -1,0 +1,40 @@
+name: Login Tests CI
+
+on:
+  push:
+    branches: [ main, develop ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  test-login:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v2
+        with:
+          node-version: '18'
+
+      - name: Install dependencies
+        run: |
+          cd frontend
+          npm install
+
+      - name: Run Login Unit Tests
+        run: |
+          cd frontend
+          npm test -- --testPathPattern=Login
+
+      - name: Run Login E2E Tests
+        run: |
+          npx cypress run --spec "cypress/e2e/login.e2e.spec.js"
+
+
+      - name: Upload test reports
+        uses: actions/upload-artifact@v3
+        with:
+          name: cypress-report
+          path: cypress/videos
