@@ -26,7 +26,7 @@ jobs:
       - name: Run Login Unit Tests
         run: |
           cd frontend
-          npm test -- --testPathPattern=Login
+          npm test -- --testPathPatterns=Login
 
       - name: Run Login E2E Tests
         run: |
