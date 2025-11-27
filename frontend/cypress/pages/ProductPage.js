@@ -28,6 +28,10 @@ class ProductPage {
       .click();
   }
 
+  getCartItems() {
+  return cy.get('.cart-items'); // hoặc selector đúng với component Cart của bạn
+  }
+
   verifyProductInCart(name) {
     this.getCartItems().contains(name).should('exist');
   }
