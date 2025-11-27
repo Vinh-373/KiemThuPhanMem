@@ -1,63 +1,91 @@
-name: Fullstack CI
+name: CI Pipeline
 
 on:
   push:
-    branches:
-      - main
+    branches: [ main ]
   pull_request:
+    branches: [ main ]
 
 jobs:
-  build-frontend:
+  build-and-test:
     runs-on: ubuntu-latest
-    container:
-      image: node:20
+
+    services:
+      postgres:
+        image: postgres:15
+        env:
+          POSTGRES_USER: test
+          POSTGRES_PASSWORD: test
+          POSTGRES_DB: testdb
+        ports: [5432:5432]
+        options: >-
+          --health-cmd pg_isready
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+
     steps:
-      - name: Checkout code
-        uses: actions/checkout@v4
+    - name: 🧾 Checkout code
+      uses: actions/checkout@v4
 
-      - name: Install frontend dependencies
-        run: npm install
-        working-directory: ./frontend
+    - name: 🧰 Set up Node.js
+      uses: actions/setup-node@v4
+      with:
+        node-version: 20
 
-      - name: Build frontend
-        run: npm run build
-        working-directory: ./frontend
+    - name: ☕ Set up Java
+      uses: actions/setup-java@v4
+      with:
+        distribution: 'temurin'
+        java-version: '17'
 
-      - name: Upload Cypress screenshots
-        uses: actions/upload-artifact@v4
-        with:
-          name: cypress-screenshots
-          path: ./cypress/screenshots
+    - name: 📦 Install frontend dependencies
+      working-directory: frontend
+      run: npm install
 
-      - name: Upload Cypress videos
-        uses: actions/upload-artifact@v4
-        with:
-          name: cypress-videos
-          path: ./cypress/videos
+    - name: 🛠 Build frontend (React + Vite)
+      working-directory: frontend
+      run: npm run build
 
-  build-backend:
-    runs-on: ubuntu-latest
-    container:
-      image: maven:3.9.2-eclipse-temurin-20
-    steps:
-      - name: Checkout repository
-        uses: actions/checkout@v4
+    - name: 🚀 Start frontend
+      working-directory: frontend
+      run: |
+        nohup npm run dev > frontend.log 2>&1 &
+        sleep 10
 
-      # Kiểm tra thư mục backend có pom.xml
-      - name: Check backend folder
-        run: |
-          ls backend
-          pwd
+    - name: 🧱 Build backend (Spring Boot)
+      working-directory: backend
+      run: mvn clean install
 
-      # Build backend
-      - name: Build backend
-        run: |
-          cd backend
-          mvn clean package
+    - name: 🧪 Run backend tests
+      working-directory: backend
+      run: mvn test
 
-      # Upload file jar
-      - name: Upload backend jar
-        uses: actions/upload-artifact@v4
-        with:
-          name: backend-jar
-          path: backend/target/*.jar
+    - name: 🚀 Start backend
+      working-directory: backend
+      run: |
+        nohup mvn spring-boot:run > backend.log 2>&1 &
+        sleep 15
+
+    - name: 🧪 Run Cypress E2E tests
+      working-directory: frontend
+      run: npx cypress run
+
+    - name: 📸 Upload screenshots if failed
+      if: failure()
+      uses: actions/upload-artifact@v4
+      with:
+        name: cypress-screenshots
+        path: frontend/cypress/screenshots
+
+    - name: 🎥 Upload videos
+      if: always()
+      uses: actions/upload-artifact@v4
+      with:
+        name: cypress-videos
+        path: frontend/cypress/videos
+
+    - name: 🧹 Stop background servers
+      run: |
+        pkill -f "npm run dev" || true
+        pkill -f "spring-boot:run" || true
