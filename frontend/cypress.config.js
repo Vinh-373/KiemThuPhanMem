@@ -7,10 +7,10 @@ module.exports = defineConfig({
     viewportHeight: 720,
 
     
-    specPattern: "../cypress/e2e/**/*.{cy,spec}.{js,jsx,ts,tsx}",
-    supportFile: "../cypress/support/e2e.js",
-    fixturesFolder: "../cypress/fixtures",
-    screenshotsFolder: "../cypress/screenshots",
-    videosFolder: "../cypress/videos",
+    specPattern: "cypress/e2e/**/*.{cy,spec}.{js,jsx,ts,tsx}",
+    supportFile: "cypress/support/e2e.js",
+    fixturesFolder: "cypress/fixtures",
+    screenshotsFolder: "cypress/screenshots",
+    videosFolder: "cypress/videos",
   },
 });
