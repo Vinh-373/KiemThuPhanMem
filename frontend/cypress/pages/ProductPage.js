@@ -6,29 +6,26 @@ class ProductPage {
   }
 
   getUsername() {
-    return cy.get('[data-testid="username-display"]');
+    return cy.get('.user-info');
   }
 
   clickLogout() {
-    cy.get('[data-testid="logout-btn"]').click();
+    cy.get('.logout-btn').click();
   }
 
   getProductItems() {
-    return cy.get('[data-testid="product-item"]');
+    return cy.get('.product-card');
   }
 
   getProductByName(name) {
-    return cy.contains('[data-testid="product-item"]', name);
+    return cy.contains('.product-card', name);
   }
 
   clickAddToCart(name) {
     this.getProductByName(name)
-      .find('[data-testid="add-to-cart-btn"]')
+      .find('button')
+      .contains('Add to Cart')
       .click();
-  }
-
-  getCartItems() {
-    return cy.get('[data-testid="cart-items"]');
   }
 
   verifyProductInCart(name) {
