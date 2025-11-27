@@ -45,6 +45,7 @@ export default function LoginForm({ onLoginSuccess, onToggleMode }) {
       
       <input
         type="text"
+        name="username"
         placeholder="Username"
         value={username}
         onChange={(e) => setUsername(e.target.value)}
@@ -52,6 +53,7 @@ export default function LoginForm({ onLoginSuccess, onToggleMode }) {
       />
       <input
         type="password"
+        name="password"
         placeholder="Password"
         value={password}
         onChange={(e) => setPassword(e.target.value)}
