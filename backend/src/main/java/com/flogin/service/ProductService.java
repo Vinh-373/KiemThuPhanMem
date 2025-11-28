@@ -3,10 +3,14 @@ package com.flogin.service;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
+import java.util.Collections;
+import org.springframework.stereotype.Service; 
+
 
 import com.flogin.model.Product;
 import com.flogin.dto.ProductDto;
 
+@Service //Spring quản lý
 public class ProductService {
 
     private final List<Product> products = new ArrayList<>();
@@ -103,4 +107,74 @@ public class ProductService {
     public List<ProductDto> toDtoList(List<Product> list) {
         return list.stream().map(this::toDto).collect(Collectors.toList());
     }
+    
+    public List<ProductDto> get_AllProduct() {
+        // Thực tế sẽ gọi Repository
+        return Collections.emptyList();
+    }
+    
+    public ProductDto get_ProductById(Long id) {
+        // Thực tế sẽ gọi Repository
+        return null; 
+    }
+    
+    public ProductDto create_Product(ProductDto productDto) {
+        // Thực tế sẽ gọi Repository và lưu vào DB
+        productDto.setId(System.currentTimeMillis()); // Giả định Id
+        return productDto;
+    }
+    
+    public ProductDto update_Product(Long id, ProductDto productDto) {
+        // Thực tế sẽ gọi Repository và cập nhật
+        productDto.setId(id);
+        return productDto;
+    }
+    
+    public void delete_Product(Long id) {
+        // Thực tế sẽ gọi Repository và xóa
+        System.out.println("Product " + id + " deleted.");
+    }
 }
+
+// // File: backend/src/main/java/com/flogin/service/ProductService.java
+// package com.flogin.service;
+
+// import com.flogin.dto.ProductDto;
+// import org.springframework.stereotype.Service;
+
+// import java.util.Collections;
+// import java.util.List;
+
+// // Giả định một Service (chỉ là skeleton)
+// @Service
+// public class ProductService {
+    
+//     // Các hàm này sẽ được Mock trong ProductControllerIntegrationTest
+    
+//     public List<ProductDto> getAllProducts() {
+//         // Thực tế sẽ gọi Repository
+//         return Collections.emptyList();
+//     }
+    
+//     public ProductDto getProductById(Long id) {
+//         // Thực tế sẽ gọi Repository
+//         return null; 
+//     }
+    
+//     public ProductDto createProduct(ProductDto productDto) {
+//         // Thực tế sẽ gọi Repository và lưu vào DB
+//         productDto.setId(System.currentTimeMillis()); // Giả định Id
+//         return productDto;
+//     }
+    
+//     public ProductDto updateProduct(Long id, ProductDto productDto) {
+//         // Thực tế sẽ gọi Repository và cập nhật
+//         productDto.setId(id);
+//         return productDto;
+//     }
+    
+//     public void deleteProduct(Long id) {
+//         // Thực tế sẽ gọi Repository và xóa
+//         System.out.println("Product " + id + " deleted.");
+//     }
+// }

@@ -1,0 +1,4 @@
+-------------------------------------------------------------------------------
+Test set: com.flogin.controller.ProductControllerIntegrationTest
+-------------------------------------------------------------------------------
+Tests run: 7, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 4.960 s -- in com.flogin.controller.ProductControllerIntegrationTest

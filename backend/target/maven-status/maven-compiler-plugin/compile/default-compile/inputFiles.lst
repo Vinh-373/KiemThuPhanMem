@@ -1,14 +1,19 @@
-C:\Users\phamh\OneDrive\Máy tính\DoAN_SWT\KiemThuPhanMem\backend\src\main\java\com\flogin\controller\AuthController.java
-C:\Users\phamh\OneDrive\Máy tính\DoAN_SWT\KiemThuPhanMem\backend\src\main\java\com\flogin\repository\UserRepository.java
-C:\Users\phamh\OneDrive\Máy tính\DoAN_SWT\KiemThuPhanMem\backend\src\main\java\com\flogin\service\AuthService.java
-C:\Users\phamh\OneDrive\Máy tính\DoAN_SWT\KiemThuPhanMem\backend\src\main\java\com\flogin\config\CorsConfig.java
-C:\Users\phamh\OneDrive\Máy tính\DoAN_SWT\KiemThuPhanMem\backend\src\main\java\com\flogin\dto\LoginResponse.java
-C:\Users\phamh\OneDrive\Máy tính\DoAN_SWT\KiemThuPhanMem\backend\src\main\java\com\flogin\App.java
-C:\Users\phamh\OneDrive\Máy tính\DoAN_SWT\KiemThuPhanMem\backend\src\main\java\com\flogin\entity\User.java
-C:\Users\phamh\OneDrive\Máy tính\DoAN_SWT\KiemThuPhanMem\backend\src\main\java\com\flogin\service\ValidationService.java
-C:\Users\phamh\OneDrive\Máy tính\DoAN_SWT\KiemThuPhanMem\backend\src\main\java\com\flogin\dto\UserDTO.java
-C:\Users\phamh\OneDrive\Máy tính\DoAN_SWT\KiemThuPhanMem\backend\src\main\java\com\flogin\dto\RegisterRequest.java
-C:\Users\phamh\OneDrive\Máy tính\DoAN_SWT\KiemThuPhanMem\backend\src\main\java\com\flogin\repository\ProductRepository.java
-C:\Users\phamh\OneDrive\Máy tính\DoAN_SWT\KiemThuPhanMem\backend\src\main\java\com\flogin\config\SecurityConfig.java
-C:\Users\phamh\OneDrive\Máy tính\DoAN_SWT\KiemThuPhanMem\backend\src\main\java\com\flogin\dto\LoginRequest.java
-C:\Users\phamh\OneDrive\Máy tính\DoAN_SWT\KiemThuPhanMem\backend\src\main\java\com\flogin\entity\Product.java
+D:\Kiem_thu_phan_mem\assigment2\KiemThuPhanMem\backend\src\main\java\com\flogin\App.java
+D:\Kiem_thu_phan_mem\assigment2\KiemThuPhanMem\backend\src\main\java\com\flogin\service\AuthService.java
+D:\Kiem_thu_phan_mem\assigment2\KiemThuPhanMem\backend\src\main\java\com\flogin\dto\RegisterRequest.java
+D:\Kiem_thu_phan_mem\assigment2\KiemThuPhanMem\backend\src\main\java\com\flogin\dto\LoginRequest.java
+D:\Kiem_thu_phan_mem\assigment2\KiemThuPhanMem\backend\src\main\java\com\flogin\controller\ProductController.java
+D:\Kiem_thu_phan_mem\assigment2\KiemThuPhanMem\backend\src\main\java\com\flogin\entity\User.java
+D:\Kiem_thu_phan_mem\assigment2\KiemThuPhanMem\backend\src\main\java\com\flogin\service\AuthServiceImpl.java
+D:\Kiem_thu_phan_mem\assigment2\KiemThuPhanMem\backend\src\main\java\com\flogin\config\CorsConfig.java
+D:\Kiem_thu_phan_mem\assigment2\KiemThuPhanMem\backend\src\main\java\com\flogin\controller\AuthController.java
+D:\Kiem_thu_phan_mem\assigment2\KiemThuPhanMem\backend\src\main\java\com\flogin\repository\UserRepository.java
+D:\Kiem_thu_phan_mem\assigment2\KiemThuPhanMem\backend\src\main\java\com\flogin\config\SecurityConfig.java
+D:\Kiem_thu_phan_mem\assigment2\KiemThuPhanMem\backend\src\main\java\com\flogin\model\Product.java
+D:\Kiem_thu_phan_mem\assigment2\KiemThuPhanMem\backend\src\main\java\com\flogin\entity\Product.java
+D:\Kiem_thu_phan_mem\assigment2\KiemThuPhanMem\backend\src\main\java\com\flogin\repository\ProductRepository.java
+D:\Kiem_thu_phan_mem\assigment2\KiemThuPhanMem\backend\src\main\java\com\flogin\service\ProductService.java
+D:\Kiem_thu_phan_mem\assigment2\KiemThuPhanMem\backend\src\main\java\com\flogin\service\ValidationService.java
+D:\Kiem_thu_phan_mem\assigment2\KiemThuPhanMem\backend\src\main\java\com\flogin\dto\LoginResponse.java
+D:\Kiem_thu_phan_mem\assigment2\KiemThuPhanMem\backend\src\main\java\com\flogin\dto\ProductDto.java
+D:\Kiem_thu_phan_mem\assigment2\KiemThuPhanMem\backend\src\main\java\com\flogin\dto\UserDto.java
