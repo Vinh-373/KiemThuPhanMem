@@ -1,89 +1,3 @@
-// package com.flogin.service;
-
-// //import com.flogin.service.AuthService;
-// import org.junit.jupiter.api.BeforeEach;
-// import org.junit.jupiter.api.DisplayName;
-// import org.junit.jupiter.api.Test;
-
-// import static org.junit.jupiter.api.Assertions.*;
-
-// @DisplayName("Login Service Unit Tests")
-// class AuthServiceTest {
-
-//     private AuthService authService;
-
-//     @BeforeEach
-//     void setUp() {
-//         authService = new AuthService();
-//     }
-
-//     @Test
-//     @DisplayName("TC1: Login thanh cong voi username va password dung")
-//     void testLoginSuccess() {
-//         AuthService.LoginRequest request = new AuthService.LoginRequest("Minh", "123");
-//         AuthService.LoginResponse response = authService.authenticate(request);
-
-//         assertTrue(response.isSuccess());
-//         assertEquals("Dang nhap thanh cong", response.getMessage());
-//         assertNotNull(response.getToken());
-//     }
-
-//     @Test
-//     @DisplayName("TC2: Login that bai voi username khong ton tai")
-//     void testLoginInvalidUsername() {
-//         AuthService.LoginRequest request = new AuthService.LoginRequest("Duc", "123");
-//         AuthService.LoginResponse response = authService.authenticate(request);
-
-//         assertFalse(response.isSuccess());
-//         assertEquals("Username khong ton tai", response.getMessage());
-//         assertNull(response.getToken());
-//     }
-
-//     @Test
-//     @DisplayName("TC3: Login that bai voi password sai  ")
-//     void testLoginWrongPassword() {
-//         AuthService.LoginRequest request = new AuthService.LoginRequest("Minh", "111");
-//         AuthService.LoginResponse response = authService.authenticate(request);
-
-//         assertFalse(response.isSuccess());
-//         assertEquals("Sai mat khau", response.getMessage());
-//         assertNull(response.getToken());
-//     }
-
-//     @Test
-//     @DisplayName("TC4: Validation loi khi username hoac password rong hoac null")
-//     void testValidationErrors() {
-//         // Case 1: username null
-//         AuthService.LoginRequest emptyUser = new AuthService.LoginRequest(null, "123");
-//         AuthService.LoginResponse res1 = authService.authenticate(emptyUser);
-//         assertFalse(res1.isSuccess());
-//         assertEquals("Username khong duoc de trong", res1.getMessage());
-
-//         // Case 2: password null
-//         AuthService.LoginRequest nullPass = new AuthService.LoginRequest("Minh", null);
-//         AuthService.LoginResponse res2 = authService.authenticate(nullPass);
-//         assertFalse(res2.isSuccess());
-//         assertEquals("Password khong duoc de trong", res2.getMessage());
-
-//         // Case 2: password rong
-//         AuthService.LoginRequest emptyPass = new AuthService.LoginRequest("Minh", "");
-//         AuthService.LoginResponse res3 = authService.authenticate(emptyPass);
-//         assertFalse(res3.isSuccess());
-//         assertEquals("Password khong duoc de trong", res3.getMessage());
-
-//         //Case 3: request null
-//         AuthService.LoginResponse res4 = authService.authenticate(null);
-//         assertFalse(res4.isSuccess());
-//         assertEquals("Request khong duoc null", res4.getMessage());
-
-//         //Case 4: username rong
-//         AuthService.LoginRequest emptyUsername = new AuthService.LoginRequest("", "123");
-//         AuthService.LoginResponse res5 = authService.authenticate(emptyUsername);
-//         assertFalse(res5.isSuccess());
-//         assertEquals("Username khong duoc de trong", res5.getMessage());
-//     }
-// }
-
 package com.flogin.service;
 
 import com.flogin.dto.LoginRequest;
@@ -100,11 +14,11 @@ class AuthServiceTest {
 
     @BeforeEach
     void setUp() {
-        authService = new AuthServiceImpl(); // đúng
+        authService = new AuthServiceImpl(); // khởi tạo service
     }
 
     @Test
-    @DisplayName("TC1: Login thanh cong voi username va password dung")
+    @DisplayName("TC1: Login thành công với username và password đúng")
     void testLoginSuccess() {
         LoginRequest request = new LoginRequest("Minh", "123");
         LoginResponse response = authService.authenticate(request);
@@ -115,7 +29,7 @@ class AuthServiceTest {
     }
 
     @Test
-    @DisplayName("TC2: Login that bai voi username khong ton tai")
+    @DisplayName("TC2: Login thất bại với username không tồn tại")
     void testLoginInvalidUsername() {
         LoginRequest request = new LoginRequest("Duc", "123");
         LoginResponse response = authService.authenticate(request);
@@ -126,7 +40,7 @@ class AuthServiceTest {
     }
 
     @Test
-    @DisplayName("TC3: Login that bai voi password sai")
+    @DisplayName("TC3: Login thất bại với password sai")
     void testLoginWrongPassword() {
         LoginRequest request = new LoginRequest("Minh", "111");
         LoginResponse response = authService.authenticate(request);
@@ -137,26 +51,30 @@ class AuthServiceTest {
     }
 
     @Test
-    @DisplayName("TC4: Validation loi")
+    @DisplayName("TC4: Validation lỗi")
     void testValidationErrors() {
+        // Username null
         LoginRequest u1 = new LoginRequest(null, "123");
-        assertEquals("Tên đăng nhập và mật khẩu không được để trống.",
+        assertEquals("Username không được để trống",
                 authService.authenticate(u1).getMessage());
 
+        // Password null
         LoginRequest u2 = new LoginRequest("Minh", null);
-        assertEquals("Tên đăng nhập và mật khẩu không được để trống.",
+        assertEquals("Password không được để trống",
                 authService.authenticate(u2).getMessage());
 
+        // Password rỗng
         LoginRequest u3 = new LoginRequest("Minh", "");
-        assertEquals("Tên đăng nhập và mật khẩu không được để trống.",
+        assertEquals("Password không được để trống",
                 authService.authenticate(u3).getMessage());
 
+        // Request null
         LoginResponse r4 = authService.authenticate(null);
-        assertEquals("Tên đăng nhập và mật khẩu không được để trống.", r4.getMessage());
+        assertEquals("Request không được null", r4.getMessage());
 
+        // Username rỗng
         LoginRequest u5 = new LoginRequest("", "123");
-        assertEquals("Tên đăng nhập và mật khẩu không được để trống.",
+        assertEquals("Username không được để trống",
                 authService.authenticate(u5).getMessage());
     }
 }
-
