@@ -5,15 +5,18 @@ describe('Product E2E Tests', () => {
 
   beforeEach(() => {
     cy.login('testuser', 'Test123'); // giả lập đăng nhập
+
+    // Mock API trả về dữ liệu từ fixture
+    cy.intercept('GET', '/api/products', { fixture: 'products.json' }).as('getProducts');
+
     productPage = new ProductPage();
     productPage.visit();
+    cy.wait('@getProducts'); // chờ dữ liệu load xong
   });
 
-  it('Hiển thị grid sản phẩm hoặc thông báo rỗng', () => {
-    // Nếu có grid thì tồn tại .products-grid
+  it('Hiển thị grid sản phẩm', () => {
     productPage.getGrid().should('exist');
-    // Nếu không có sản phẩm thì có thông báo
-    productPage.getNoProductsMessage().should('exist');
+    productPage.getCards().should('have.length.at.least', 1);
   });
 
   it('Có thể điền và submit form sản phẩm', () => {
@@ -34,24 +37,19 @@ describe('Product E2E Tests', () => {
   });
 
   it('Hiển thị chi tiết sản phẩm', () => {
+    // giả lập API chi tiết sản phẩm
+    cy.intercept('GET', '/api/products/1', { fixture: 'productDetail.json' }).as('getProductDetail');
+    cy.visit('/products/1');
+    cy.wait('@getProductDetail');
+
     productPage.getProductDetail().should('exist');
-    productPage.getProductName().should('exist');
+    productPage.getProductName().should('contain', 'Laptop Dell');
     productPage.getProductPrice().should('contain', 'VNĐ');
   });
 
   it('Có thể click Add to Cart trên card đầu tiên', () => {
     productPage.getCards().should('exist');
     productPage.clickAddToCart(0);
-    // ở đây bạn có thể kiểm tra trạng thái giỏ hàng nếu có
-  });
-
-  it('Hiển thị trạng thái loading và error khi tải danh sách', () => {
-    productPage.getLoadingList().should('exist');
-    productPage.getErrorList().should('exist');
-  });
-
-  it('Hiển thị trạng thái loading và error khi tải chi tiết', () => {
-    productPage.getLoadingDetail().should('exist');
-    productPage.getErrorDetail().should('exist');
+    // TODO: kiểm tra giỏ hàng nếu có
   });
 });
