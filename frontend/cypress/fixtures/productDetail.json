@@ -1,0 +1,9 @@
+{
+  "id": 1,
+  "name": "Laptop Dell",
+  "company": "Dell",
+  "description": "Laptop văn phòng",
+  "quantity": 10,
+  "price": 15000000,
+  "img": "/images/dell.png"
+}
