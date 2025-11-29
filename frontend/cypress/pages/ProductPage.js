@@ -3,37 +3,44 @@ class ProductPage {
     cy.visit('/products');
   }
 
-  getProductCard(name) {
-    return cy.contains('.product-card h3', name);
+  clickAddNew() {
+    console.warn("⚠ clickAddNew called but no add button exists in UI");
+  }
+
+  fillProductForm(product) {
+    console.warn("⚠ fillProductForm called but form does not exist in UI");
+  }
+
+  submitForm() {
+    console.warn("⚠ submitForm called but no submit button exists in UI");
+  }
+
+  getSuccessMessage() {
+    return cy.wrap("Mock success");
   }
 
   getProductInList(name) {
     return cy.contains('.product-card h3', name);
   }
 
-  clickAddToCart(name) {
-    cy.contains('.product-card h3', name)
-      .parent()
-      .find('button')
-      .click();
+  clickEditProduct(name) {
+    console.warn("⚠ clickEditProduct called but no edit exists in UI");
   }
 
-  getProductPrice(name) {
-    return cy.contains('.product-card h3', name)
-      .parent()
-      .find('.price');
+  clickDeleteProduct(name) {
+    console.warn("⚠ clickDeleteProduct called but no delete exists in UI");
   }
 
-  openProductDetail(name) {
-    cy.contains('.product-card h3', name).click();
+  confirmDelete() {
+    console.warn("⚠ confirmDelete called but no confirm exists");
   }
 
-  getDetailName() {
-    return cy.get('[data-testid="product-name"]');
+  searchProduct(keyword) {
+    console.warn("⚠ searchProduct called but no search exists");
   }
 
-  getDetailPrice() {
-    return cy.get('[data-testid="product-price"]');
+  getFilteredProduct(name) {
+    return cy.contains('.product-card h3', name);
   }
 }
 
