@@ -32,7 +32,7 @@ describe('Product E2E Tests', () => {
   // c) Test Update product (0.5 điểm)
   it('Nên cập nhật sản phẩm thành công', () => {
     productPage.clickEditProduct(product.name);
-    cy.get('[data-testid="product-price"]').clear().type('14000000');
+    cy.get('.product-card').clear().type('14000000');
     productPage.submitForm();
 
     productPage.getProductInList(product.name)
