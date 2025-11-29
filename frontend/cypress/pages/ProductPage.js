@@ -38,7 +38,7 @@ class ProductPage {
     return cy.get('[role="alert"]');
   }
 
-  // Lấy sản phẩm trong danh sách theo tên
+  // Lấy sản phẩm trong danh sách theo tên (ProductList có data-testid="product-item")
   getProductInList(name) {
     return cy.contains('[data-testid="product-item"]', name);
   }
