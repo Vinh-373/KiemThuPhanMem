@@ -1,31 +1,56 @@
-// cypress/e2e/product.e2e.spec.js
-
 import ProductPage from '../pages/ProductPage';
 
 describe('Product E2E Tests', () => {
   const productPage = new ProductPage();
 
+  const product = {
+    name: 'Laptop Dell',
+    price: '15000000',
+    quantity: '10'
+  };
+
   beforeEach(() => {
-    cy.login('anhthi', 'Test123'); // custom command đã định nghĩa
+    cy.login('testuser', 'Test123'); // Custom command đã định nghĩa
     productPage.visit();
   });
 
-  it('Nên hiển thị danh sách sản phẩm', () => {
-    productPage.getProductItems().should('have.length.at.least', 1);
-    productPage.getProductByName('iPhone 15 Pro Max 256GB').should('exist');
+  // a) Test Create product flow (0.5 điểm)
+  it('Nên tạo sản phẩm mới thành công', () => {
+    productPage.clickAddNew();
+    productPage.fillProductForm(product);
+    productPage.submitForm();
+
+    productPage.getSuccessMessage().should('contain', 'Thêm thành công');
+    productPage.getProductInList(product.name).should('exist');
   });
 
-  it('Nên thêm sản phẩm vào giỏ hàng', () => {
-    productPage.clickAddToCart('Samsung Galaxy S24 Ultra 256GB');
-    productPage.verifyProductInCart('Samsung Galaxy S24 Ultra 256GB');
+  // b) Test Read/List products (0.5 điểm)
+  it('Nên hiển thị sản phẩm trong danh sách', () => {
+    productPage.getProductInList(product.name).should('exist');
   });
 
-  it('Nên hiển thị tên người dùng sau khi đăng nhập', () => {
-    productPage.getUsername().should('contain', 'anhthi');
+  // c) Test Update product (0.5 điểm)
+  it('Nên cập nhật sản phẩm thành công', () => {
+    productPage.clickEditProduct(product.name);
+    cy.get('[data-testid="product-price"]').clear().type('14000000');
+    productPage.submitForm();
+
+    productPage.getProductInList(product.name)
+      .parent()
+      .should('contain', '14,000,000');
   });
 
-  it('Nên đăng xuất và quay về trang đăng ký', () => {
-    productPage.clickLogout();
-    cy.url().should('include', '/register');
+  // d) Test Delete product (0.5 điểm)
+  it('Nên xóa sản phẩm thành công', () => {
+    productPage.clickDeleteProduct(product.name);
+    productPage.confirmDelete();
+
+    productPage.getProductInList(product.name).should('not.exist');
+  });
+
+  // e) Test Search/Filter functionality (0.5 điểm)
+  it('Nên tìm kiếm sản phẩm thành công', () => {
+    productPage.searchProduct('Laptop');
+    productPage.getFilteredProduct(product.name).should('exist');
   });
 });
