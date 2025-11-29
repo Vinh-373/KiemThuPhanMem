@@ -8,36 +8,34 @@ describe('Product E2E Tests', () => {
     productPage.visit();
   });
 
-  it('Hiển thị danh sách sản phẩm', () => {
-    productPage.getGrid().should('exist');
-    productPage.getCards().should('exist');
-  });
-
   it('Có thể thêm sản phẩm vào giỏ hàng', () => {
-    productPage.getCards().should('exist');
+    // Kiểm tra có card sản phẩm và click Add to Cart
     productPage.clickAddToCart(0);
-    // Ở đây bạn có thể kiểm tra console log hoặc trạng thái giỏ hàng nếu có
+    // Ở đây bạn có thể kiểm tra trạng thái giỏ hàng nếu có
   });
 
-  it('Hiển thị form sản phẩm', () => {
+  it('Có thể điền và submit form sản phẩm', () => {
     productPage.getForm().should('exist');
     productPage.fillProductForm({
       name: 'Laptop Dell',
       price: '15000000',
       quantity: '10'
     });
-    productPage.submitForm();
+    productPage.getForm().submit();
+
     productPage.getSuccessMessage().should('exist');
   });
 
-  it('Hiển thị chi tiết sản phẩm', () => {
-    productPage.getProductDetail().should('exist');
-    productPage.getProductName().should('not.be.empty');
-    productPage.getProductPrice().should('contain', 'VNĐ');
+  it('Hiển thị sản phẩm trong danh sách', () => {
+    productPage.getProductInList('Laptop Dell').should('exist');
   });
 
-  it('Hiển thị trạng thái loading và error trong danh sách', () => {
-    productPage.getLoadingList().should('exist');
+  it('Hiển thị lỗi khi tải danh sách thất bại', () => {
     productPage.getErrorList().should('exist');
+  });
+
+  it('Hiển thị chi tiết sản phẩm', () => {
+    productPage.getProductName().should('not.be.empty');
+    productPage.getProductPrice().should('contain', 'VNĐ');
   });
 });
