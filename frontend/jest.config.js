@@ -3,8 +3,10 @@ module.exports = {
     "^.+\\.[jt]sx?$": "babel-jest",
   },
   testEnvironment: "jsdom",
-  testPathIgnorePatterns: ["/node_modules/", "/cypress/"], // bỏ qua Cypress
+  setupFilesAfterEnv: ["<rootDir>/setupTests.js"],   // 👈 thêm dòng này
+  testPathIgnorePatterns: ["/node_modules/", "/cypress/"],
   moduleNameMapper: {
+    "^.+\\.css$": "identity-obj-proxy",
     "^@/(.*)$": "<rootDir>/src/$1",
   },
 };
