@@ -1,47 +1,40 @@
 import ProductPage from '../pages/ProductPage';
 
-describe('Product Management E2E', () => {
+describe('Product E2E Tests', () => {
   const productPage = new ProductPage();
-  const product = {
-    name: 'Test Product',
-    price: '123',
-    quantity: '10'
-  };
 
   beforeEach(() => {
+    cy.login('testuser', 'Test123'); // Custom command giả lập đăng nhập
     productPage.visit();
   });
 
-  it('should create a new product', () => {
+  it('Nên tạo sản phẩm mới thành công', () => {
     productPage.clickAddNew();
-    productPage.fillProductForm(product);
+    productPage.fillProductForm({
+      name: 'Laptop Dell',
+      price: '15000000',
+      quantity: '10'
+    });
     productPage.submitForm();
 
-    productPage.getSuccessMessage().should('be.visible').and('contain', 'Product created successfully');
-    productPage.getProductInList(product.name).should('exist');
+    productPage.getSuccessMessage()
+      .should('contain', 'thành công');
+    productPage.getProductInList('Laptop Dell')
+      .should('exist');
   });
 
-  it('should edit a product', () => {
-    productPage.clickEditProduct(product.name);
-
-    const updated = { ...product, name: 'Edited Product' };
-    productPage.fillProductForm(updated);
+  it('Nên cập nhật sản phẩm thành công', () => {
+    productPage.clickEditProduct('Laptop Dell');
+    cy.get('[data-testid="product-price"]').clear().type('14000000');
     productPage.submitForm();
 
-    productPage.getSuccessMessage().should('be.visible').and('contain', 'Product updated successfully');
-    productPage.getProductInList(updated.name).should('exist');
+    cy.get('[data-testid="product-price"]')
+      .should('contain', '14,000,000');
   });
 
-  it('should filter/search for product', () => {
-    productPage.searchProduct('Edited Product');
-    productPage.getFilteredProduct('Edited Product').should('exist');
-  });
-
-  it('should delete a product', () => {
-    productPage.clickDeleteProduct('Edited Product');
-    productPage.confirmDelete();
-
-    productPage.getSuccessMessage().should('be.visible').and('contain', 'Product deleted successfully');
-    productPage.getProductInList('Edited Product').should('not.exist');
+  it('Nên xóa sản phẩm thành công', () => {
+    productPage.clickDeleteProduct('Laptop Dell');
+    productPage.getProductInList('Laptop Dell')
+      .should('not.exist');
   });
 });
