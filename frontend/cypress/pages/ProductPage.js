@@ -1,50 +1,18 @@
-class ProductPage {
-  visit() {
-    cy.visit('/products');
-  }
+import ProductPage from '../pages/ProductPage';
 
+describe('Product E2E Tests', () => {
+  const productPage = new ProductPage();
 
-  // Nút Add to Cart trong card (ProductCard.jsx có <button>)
-  clickAddToCart(index = 0) {
-    cy.get('.product-card button').eq(index).click();
-  }
+  beforeEach(() => {
+    cy.login('testuser', 'Test123');
+    productPage.visit();
+  });
 
-  // Form tạo/chỉnh sửa sản phẩm (ProductForm.jsx có data-testid="product-form")
-  getForm() {
-    return cy.get('[data-testid="product-form"]');
-  }
+  it('Hiển thị grid sản phẩm', () => {
+    productPage.getGrid().should('exist');
+  });
 
-  fillProductForm(product) {
-    cy.get('input[aria-label="Ten san pham"]').clear().type(product.name);
-    cy.get('input[aria-label="Gia"]').clear().type(product.price);
-    cy.get('input[aria-label="So luong"]').clear().type(product.quantity);
-  }
-
-
-
-  // Thông báo thành công (ProductForm.jsx có <p role="alert">)
-  getSuccessMessage() {
-    return cy.get('[role="alert"]');
-  }
-
-  // Lấy sản phẩm trong danh sách theo tên (ProductList.jsx có data-testid="product-item")
-  getProductInList(name) {
-    return cy.contains('[data-testid="product-item"]', name);
-  }
-
-
-  getErrorList() {
-    return cy.get('[data-testid="error-list"]');
-  }
-
-
-  getProductName() {
-    return cy.get('[data-testid="product-name"]');
-  }
-
-  getProductPrice() {
-    return cy.get('[data-testid="product-price"]');
-  }
-}
-
-export default ProductPage;
+  it('Hiển thị thông báo khi không có sản phẩm', () => {
+    cy.contains('No products available').should('exist');
+  });
+});
