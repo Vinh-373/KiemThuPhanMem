@@ -3,28 +3,66 @@ class ProductPage {
     cy.visit('/products');
   }
 
+  // Grid danh sách sản phẩm
   getGrid() {
     return cy.get('.products-grid');
   }
 
+  // Card từng sản phẩm
   getCards() {
     return cy.get('.product-card');
   }
 
-  getAddToCartButtons() {
-    return cy.get('.product-card button');
+  // Nút Add to Cart trong card
+  clickAddToCart(index = 0) {
+    cy.get('.product-card button').eq(index).click();
   }
 
-  getHeaderUsername() {
-    return cy.get('.header-username');
+  // Form tạo/chỉnh sửa sản phẩm
+  getForm() {
+    return cy.get('[data-testid="product-form"]');
   }
 
-  clickLogout() {
-    cy.get('.logout-button').click();
+  fillProductForm(product) {
+    cy.get('input[aria-label="Ten san pham"]').clear().type(product.name);
+    cy.get('input[aria-label="Gia"]').clear().type(product.price);
+    cy.get('input[aria-label="So luong"]').clear().type(product.quantity);
   }
 
-  getLoadingSpinner() {
-    return cy.get('.loading-spinner');
+  submitForm() {
+    cy.get('[data-testid="product-form"]').submit();
+  }
+
+  // Thông báo thành công (role="alert")
+  getSuccessMessage() {
+    return cy.get('[role="alert"]');
+  }
+
+  // Lấy sản phẩm trong danh sách theo tên
+  getProductInList(name) {
+    return cy.contains('[data-testid="product-item"]', name);
+  }
+
+  // Loading và error trong ProductList
+  getLoadingList() {
+    return cy.get('[data-testid="loading-list"]');
+  }
+
+  getErrorList() {
+    return cy.get('[data-testid="error-list"]');
+  }
+
+  // Chi tiết sản phẩm
+  getProductDetail() {
+    return cy.get('[data-testid="product-detail"]');
+  }
+
+  getProductName() {
+    return cy.get('[data-testid="product-name"]');
+  }
+
+  getProductPrice() {
+    return cy.get('[data-testid="product-price"]');
   }
 }
 
