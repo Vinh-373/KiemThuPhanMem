@@ -140,22 +140,22 @@ class AuthServiceTest {
     @DisplayName("TC4: Validation loi")
     void testValidationErrors() {
         LoginRequest u1 = new LoginRequest(null, "123");
-        assertEquals("Username không được để trống",
+        assertEquals("Tên đăng nhập và mật khẩu không được để trống.",
                 authService.authenticate(u1).getMessage());
 
         LoginRequest u2 = new LoginRequest("Minh", null);
-        assertEquals("Password không được để trống",
+        assertEquals("Tên đăng nhập và mật khẩu không được để trống.",
                 authService.authenticate(u2).getMessage());
 
         LoginRequest u3 = new LoginRequest("Minh", "");
-        assertEquals("Password không được để trống",
+        assertEquals("Tên đăng nhập và mật khẩu không được để trống.",
                 authService.authenticate(u3).getMessage());
 
         LoginResponse r4 = authService.authenticate(null);
-        assertEquals("Request không được null", r4.getMessage());
+        assertEquals("Tên đăng nhập và mật khẩu không được để trống.", r4.getMessage());
 
         LoginRequest u5 = new LoginRequest("", "123");
-        assertEquals("Username không được để trống",
+        assertEquals("Tên đăng nhập và mật khẩu không được để trống.",
                 authService.authenticate(u5).getMessage());
     }
 }
