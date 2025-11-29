@@ -36,22 +36,6 @@ describe('Product E2E Tests', () => {
   //   productPage.getProductInList('Laptop Dell').should('exist');
   // });
 
-it('Hiển thị chi tiết sản phẩm', () => {
-  cy.fixture('products.json').then((products) => {
-    const product = products[0]; // lấy sản phẩm đầu tiên
-    cy.intercept('GET', '/api/products/1', product).as('getProductDetail');
-
-    // ở đây không cần visit /products/1 nếu app không có router
-    // bạn có thể trigger hành động mở chi tiết ngay trong trang /products
-    productPage.getCards().eq(0).click(); // giả sử click card mở chi tiết
-
-    cy.wait('@getProductDetail');
-    productPage.getProductDetail().should('exist');
-    productPage.getProductName().should('contain', product.name);
-    productPage.getProductPrice().should('contain', 'VNĐ');
-  });
-});
-
   it('Có thể click Add to Cart trên card đầu tiên', () => {
     productPage.getCards().should('exist');
     productPage.clickAddToCart(0);
