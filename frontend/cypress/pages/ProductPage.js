@@ -3,15 +3,6 @@ class ProductPage {
     cy.visit('/products');
   }
 
-  // Grid danh sách sản phẩm (ProductGrid.jsx có class="products-grid")
-  getGrid() {
-    return cy.get('.products-grid');
-  }
-
-  // Card từng sản phẩm (ProductCard.jsx có class="product-card")
-  getCards() {
-    return cy.get('.product-card');
-  }
 
   // Nút Add to Cart trong card (ProductCard.jsx có <button>)
   clickAddToCart(index = 0) {
@@ -29,9 +20,7 @@ class ProductPage {
     cy.get('input[aria-label="So luong"]').clear().type(product.quantity);
   }
 
-  submitForm() {
-    cy.get('[data-testid="product-form"]').submit();
-  }
+
 
   // Thông báo thành công (ProductForm.jsx có <p role="alert">)
   getSuccessMessage() {
@@ -43,19 +32,11 @@ class ProductPage {
     return cy.contains('[data-testid="product-item"]', name);
   }
 
-  // Loading và error trong ProductList.jsx
-  getLoadingList() {
-    return cy.get('[data-testid="loading-list"]');
-  }
 
   getErrorList() {
     return cy.get('[data-testid="error-list"]');
   }
 
-  // Chi tiết sản phẩm (ProductDetail.jsx có data-testid="product-detail")
-  getProductDetail() {
-    return cy.get('[data-testid="product-detail"]');
-  }
 
   getProductName() {
     return cy.get('[data-testid="product-name"]');
