@@ -110,7 +110,7 @@ class AuthServiceTest {
         LoginResponse response = authService.authenticate(request);
 
         assertTrue(response.isSuccess());
-        assertEquals("Dang nhap thanh cong", response.getMessage());
+        assertEquals("Đăng nhập thành công", response.getMessage());
         assertNotNull(response.getToken());
     }
 
@@ -121,7 +121,7 @@ class AuthServiceTest {
         LoginResponse response = authService.authenticate(request);
 
         assertFalse(response.isSuccess());
-        assertEquals("Username khong ton tai", response.getMessage());
+        assertEquals("Username không tồn tại", response.getMessage());
         assertNull(response.getToken());
     }
 
@@ -132,7 +132,7 @@ class AuthServiceTest {
         LoginResponse response = authService.authenticate(request);
 
         assertFalse(response.isSuccess());
-        assertEquals("Sai mat khau", response.getMessage());
+        assertEquals("Sai mật khẩu", response.getMessage());
         assertNull(response.getToken());
     }
 
@@ -140,22 +140,22 @@ class AuthServiceTest {
     @DisplayName("TC4: Validation loi")
     void testValidationErrors() {
         LoginRequest u1 = new LoginRequest(null, "123");
-        assertEquals("Username khong duoc de trong",
+        assertEquals("Username không được để trống",
                 authService.authenticate(u1).getMessage());
 
         LoginRequest u2 = new LoginRequest("Minh", null);
-        assertEquals("Password khong duoc de trong",
+        assertEquals("Password không được để trống",
                 authService.authenticate(u2).getMessage());
 
         LoginRequest u3 = new LoginRequest("Minh", "");
-        assertEquals("Password khong duoc de trong",
+        assertEquals("Password không được để trống",
                 authService.authenticate(u3).getMessage());
 
         LoginResponse r4 = authService.authenticate(null);
-        assertEquals("Request khong duoc null", r4.getMessage());
+        assertEquals("Request không được null", r4.getMessage());
 
         LoginRequest u5 = new LoginRequest("", "123");
-        assertEquals("Username khong duoc de trong",
+        assertEquals("Username không được để trống",
                 authService.authenticate(u5).getMessage());
     }
 }
