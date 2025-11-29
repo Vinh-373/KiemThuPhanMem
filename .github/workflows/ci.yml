@@ -50,7 +50,7 @@ jobs:
           cd backend
           mvn clean install -DskipTests
 
-      - name: Start backend
+      - name: Start backend server
         run: |
           cd backend
           mvn spring-boot:run &
@@ -62,18 +62,17 @@ jobs:
           cd frontend
           npm install
 
-      - name: Start frontend
+      - name: Start frontend vite dev server
         run: |
           cd frontend
-          npm start &
-          sleep 5
+          npm run dev -- --host &
+          sleep 10
+
+      - name: Debug — check frontend is running
+        run: |
+          curl -I http://localhost:5173
 
       - name: Run Cypress E2E Tests
         run: |
           cd frontend
-          npx cypress run
-
-      - name: Upload Coverage to Codecov
-        uses: codecov/codecov-action@v4
-        with:
-          files: ./frontend/coverage/lcov.info,./backend/target/site/jacoco/jacoco.xml
+          npx cypress run --browser chrome
