@@ -1,14 +1,4 @@
 -------------------------------------------------------------------------------
 Test set: com.flogin.service.ProductServiceTest
 -------------------------------------------------------------------------------
-Tests run: 14, Failures: 0, Errors: 1, Skipped: 0, Time elapsed: 0.045 s <<< FAILURE! -- in com.flogin.service.ProductServiceTest
-com.flogin.service.ProductServiceTest.testDeleteProduct -- Time elapsed: 0.001 s <<< ERROR!
-java.lang.Error: 
-Unresolved compilation problem: 
-	Type mismatch: cannot convert from void to boolean
-
-	at com.flogin.service.ProductServiceTest.testDeleteProduct(ProductServiceTest.java:63)
-	at java.base/java.lang.reflect.Method.invoke(Method.java:569)
-	at java.base/java.util.ArrayList.forEach(ArrayList.java:1511)
-	at java.base/java.util.ArrayList.forEach(ArrayList.java:1511)
-
+Tests run: 14, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.047 s -- in com.flogin.service.ProductServiceTest

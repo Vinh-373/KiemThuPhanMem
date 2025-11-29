@@ -1,5 +1,7 @@
-D:\Kiem_thu_phan_mem\assigment2\KiemThuPhanMem\backend\src\test\java\com\flogin\service\ValidationServiceTest.java
-D:\Kiem_thu_phan_mem\assigment2\KiemThuPhanMem\backend\src\test\java\com\flogin\controller\AuthControllerIntegrationTest.java
-D:\Kiem_thu_phan_mem\assigment2\KiemThuPhanMem\backend\src\test\java\com\flogin\controller\ProductControllerIntegrationTest.java
-D:\Kiem_thu_phan_mem\assigment2\KiemThuPhanMem\backend\src\test\java\com\flogin\service\AuthServiceTest.java
-D:\Kiem_thu_phan_mem\assigment2\KiemThuPhanMem\backend\src\test\java\com\flogin\service\ProductServiceTest.java
+C:\KiemThuv3\KiemThuPhanMem\backend\src\test\java\com\flogin\service\AuthServiceTest.java
+C:\KiemThuv3\KiemThuPhanMem\backend\src\test\java\com\flogin\service\ValidationServiceTest.java
+C:\KiemThuv3\KiemThuPhanMem\backend\src\test\java\com\flogin\controller\ProductControllerIntegrationTest.java
+C:\KiemThuv3\KiemThuPhanMem\backend\src\test\java\com\flogin\controller\AuthControllerIntegrationTest.java
+C:\KiemThuv3\KiemThuPhanMem\backend\src\test\java\com\flogin\service\ProductServiceMockTest.java
+C:\KiemThuv3\KiemThuPhanMem\backend\src\test\java\com\flogin\controller\AuthControllerMockTest.java
+C:\KiemThuv3\KiemThuPhanMem\backend\src\test\java\com\flogin\service\ProductServiceTest.java
