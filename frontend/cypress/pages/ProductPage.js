@@ -4,43 +4,48 @@ class ProductPage {
   }
 
   clickAddNew() {
-    console.warn("⚠ clickAddNew called but no add button exists in UI");
+    cy.get('[data-testid="add-product-btn"]').should('exist').click();
   }
 
   fillProductForm(product) {
-    console.warn("⚠ fillProductForm called but form does not exist in UI");
+    cy.get('[data-testid="product-name"]').should('exist').clear().type(product.name);
+    cy.get('[data-testid="product-price"]').should('exist').clear().type(product.price);
+    cy.get('[data-testid="product-quantity"]').should('exist').clear().type(product.quantity);
   }
 
   submitForm() {
-    console.warn("⚠ submitForm called but no submit button exists in UI");
+    cy.get('[data-testid="submit-btn"]').should('exist').click();
   }
 
   getSuccessMessage() {
-    return cy.wrap("Mock success");
+    return cy.get('[data-testid="success-message"]'); // PHẢI TRẢ VỀ DOM ELEMENT!!!
   }
 
   getProductInList(name) {
-    return cy.contains('.product-card h3', name);
+    return cy.contains('.product-card', name);
   }
 
   clickEditProduct(name) {
-    console.warn("⚠ clickEditProduct called but no edit exists in UI");
+    cy.contains('.product-card', name)
+      .find('[data-testid="edit-btn"]').click();
   }
 
   clickDeleteProduct(name) {
-    console.warn("⚠ clickDeleteProduct called but no delete exists in UI");
+    cy.contains('.product-card', name)
+      .find('[data-testid="delete-btn"]').click();
   }
 
   confirmDelete() {
-    console.warn("⚠ confirmDelete called but no confirm exists");
+    cy.get('[data-testid="confirm-delete-btn"]').should('exist').click();
   }
 
   searchProduct(keyword) {
-    console.warn("⚠ searchProduct called but no search exists");
+    cy.get('[data-testid="search-input"]').should('exist').clear().type(keyword);
+    cy.get('[data-testid="search-btn"]').should('exist').click();
   }
 
   getFilteredProduct(name) {
-    return cy.contains('.product-card h3', name);
+    return cy.contains('.product-card', name);
   }
 }
 
