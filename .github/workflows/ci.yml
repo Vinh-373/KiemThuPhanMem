@@ -7,85 +7,69 @@ on:
     branches: [ main ]
 
 jobs:
-  build-and-test:
+  test:
     runs-on: ubuntu-latest
 
     services:
       postgres:
-        image: postgres:15
+        image: postgres:14
+        ports:
+          - 5432:5432
         env:
-          POSTGRES_USER: test
-          POSTGRES_PASSWORD: test
           POSTGRES_DB: testdb
-        ports: [5432:5432]
+          POSTGRES_USER: postgres
+          POSTGRES_PASSWORD: password
         options: >-
-          --health-cmd pg_isready
-          --health-interval 10s
-          --health-timeout 5s
-          --health-retries 5
+          --health-cmd="pg_isready"
+          --health-interval=10s
+          --health-timeout=5s
+          --health-retries=5
+
+    env:
+      POSTGRES_DB: testdb
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: password
 
     steps:
-    - name: 🧾 Checkout code
-      uses: actions/checkout@v4
+      - name: Checkout source code
+        uses: actions/checkout@v2
 
-    - name: 🧰 Set up Node.js
-      uses: actions/setup-node@v4
-      with:
-        node-version: 20
+      - name: Setup Java
+        uses: actions/setup-java@v2
+        with:
+          java-version: '17'
 
-    - name: ☕ Set up Java
-      uses: actions/setup-java@v4
-      with:
-        distribution: 'temurin'
-        java-version: '17'
+      - name: Setup Node.js
+        uses: actions/setup-node@v2
+        with:
+          node-version: '18'
 
-    - name: 📦 Install frontend dependencies
-      working-directory: frontend
-      run: npm install
+      - name: Run Backend Tests
+        run: |
+          cd backend
+          mvn test
 
-    - name: 🛠 Build frontend (React + Vite)
-      working-directory: frontend
-      run: npm run build
+      - name: Install Frontend Dependencies
+        run: |
+          cd frontend
+          npm install
 
-    - name: 🚀 Start frontend
-      working-directory: frontend
-      run: |
-        nohup npm run dev > frontend.log 2>&1 &
-        sleep 10
+      - name: Run Frontend Unit Tests
+        run: |
+          cd frontend
+          npm run test -- --coverage
 
-    - name: 🧱 Build backend (Spring Boot)
-      working-directory: backend
-      run: mvn clean install
+      - name: Build Frontend
+        run: |
+          cd frontend
+          npm run build
 
-    - name: 🧪 Run backend tests
-      working-directory: backend
-      run: mvn test
+      - name: Run Cypress E2E Tests
+        run: |
+          cd frontend
+          npx cypress run
 
-    - name: 🚀 Start backend
-      working-directory: backend
-      run: |
-        nohup mvn spring-boot:run > backend.log 2>&1 &
-        sleep 15
-
-    - name: 🧪 Run Cypress E2E tests
-      working-directory: frontend
-      run: npx cypress run
-
-    - name: 📸 Upload screenshots if failed
-      if: failure()
-      uses: actions/upload-artifact@v4
-      with:
-        name: cypress-screenshots
-        path: frontend/cypress/screenshots
-
-    - name: 🎥 Upload videos
-      if: always()
-      uses: actions/upload-artifact@v4
-      with:
-        name: cypress-videos
-        path: frontend/cypress/videos
-
-    - name: 🧹 Stop background servers
-      run: |
-        pkill -f "npm run dev" || true
-        pkill -f "spring-boot:run" || true
+      - name: Upload Coverage to Codecov
+        uses: codecov/codecov-action@v2
+        with:
+          files: ./frontend/coverage/lcov.info,./backend/target/site/jacoco/jacoco.xml
