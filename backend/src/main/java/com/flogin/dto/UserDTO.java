@@ -2,18 +2,18 @@ package com.flogin.dto;
 
 import com.flogin.entity.User;
 
-public class UserDto {
+public class UserDTO {
     private String username;
     private String role;
     private String password;
     // Có thể thêm ID hoặc các trường khác nếu cần
 
-    public UserDto(User user) {
+    public UserDTO(User user) {
         this.username = user.getUsername();
         this.role = user.getRole();
     }
 
-    public UserDto( String username , String password){
+    public UserDTO( String username , String password){
         this.username = username;
         this.password = password;
     }
