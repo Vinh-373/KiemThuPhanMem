@@ -3,38 +3,64 @@ class ProductPage {
     cy.visit('/products');
   }
 
-  // Nút Add to Cart trong card (ProductCard.jsx có <button>)
+  // Lấy tất cả card sản phẩm
+  getCards() {
+    return cy.get('.product-card');
+  }
+  // Lấy ảnh sản phẩm trong card
+  getProductImage(index = 0) {
+    return cy.get('.product-card').eq(index).find('.product-img');
+  }
+
+  // Lấy tên sản phẩm
+  getProductTitle(index = 0) {
+    return cy.get('.product-card').eq(index).find('h3');
+  }
+
+  // Lấy công ty
+  getProductCompany(index = 0) {
+    return cy.get('.product-card').eq(index).find('.company');
+  }
+
+  // Lấy mô tả
+  getProductDescription(index = 0) {
+    return cy.get('.product-card').eq(index).find('.description');
+  }
+
+  // Lấy số lượng tồn kho
+  getProductQuantity(index = 0) {
+    return cy.get('.product-card').eq(index).find('.quantity');
+  }
+
+  // Lấy giá sản phẩm
+  getProductPrice(index = 0) {
+    return cy.get('.product-card').eq(index).find('.price');
+  }
+
+  // Click nút Add to Cart
   clickAddToCart(index = 0) {
-    cy.get('.product-card button').eq(index).click();
+    cy.get('.product-card').eq(index).find('button').click();
   }
 
-  // Form sản phẩm (ProductForm.jsx có data-testid="product-form")
-  getForm() {
-    return cy.get('[data-testid="product-form"]');
+
+
+
+
+  // Trạng thái loading chi tiết
+  getLoadingDetail() {
+    return cy.get('[data-testid="loading-detail"]');
   }
 
-  fillProductForm(product) {
-    cy.get('input[aria-label="Ten san pham"]').clear().type(product.name);
-    cy.get('input[aria-label="Gia"]').clear().type(product.price);
-    cy.get('input[aria-label="So luong"]').clear().type(product.quantity);
+  // Trạng thái error chi tiết
+  getErrorDetail() {
+    return cy.get('[data-testid="error-detail"]');
   }
 
-  // Thông báo thành công (ProductForm.jsx có <p role="alert">)
-  getSuccessMessage() {
-    return cy.get('[role="alert"]');
+  // Chi tiết sản phẩm
+  getProductDetail() {
+    return cy.get('[data-testid="product-detail"]');
   }
 
-  // Lấy sản phẩm trong danh sách theo tên (ProductList.jsx có data-testid="product-item")
-  getProductInList(name) {
-    return cy.contains('[data-testid="product-item"]', name);
-  }
-
-  // Error trong ProductList.jsx
-  getErrorList() {
-    return cy.get('[data-testid="error-list"]');
-  }
-
-  // Chi tiết sản phẩm (ProductDetail.jsx có data-testid="product-name" và "product-price")
   getProductName() {
     return cy.get('[data-testid="product-name"]');
   }
@@ -42,6 +68,83 @@ class ProductPage {
   getProductPrice() {
     return cy.get('[data-testid="product-price"]');
   }
-}
 
+
+
+
+  // Lấy form sản phẩm (có data-testid="product-form")
+  getForm() {
+    return cy.get('[data-testid="product-form"]');
+  }
+
+  // Điền dữ liệu vào form: tên, giá, số lượng
+  fillProductForm(product) {
+    cy.get('input[aria-label="Ten san pham"]').clear().type(product.name);
+    cy.get('input[aria-label="Gia"]').clear().type(product.price);
+    cy.get('input[aria-label="So luong"]').clear().type(product.quantity);
+  }
+
+  // Submit form
+  submitForm() {
+    this.getForm().submit();
+  }
+
+  // Lấy thông báo thành công / lỗi (role="alert")
+  getSuccessMessage() {
+    return cy.get('[role="alert"]');
+  }
+
+  // Lấy thông báo loading khi edit (text "Đang tải dữ liệu...")
+  getLoadingMessage() {
+    return cy.contains('Đang tải dữ liệu...');
+  }
+
+
+
+
+
+  // Grid chứa danh sách sản phẩm
+  getGrid() {
+    return cy.get('.products-grid');
+  }
+
+  // Thông báo khi không có sản phẩm
+  getNoProductsMessage() {
+    return cy.get('.no-products');
+  }
+
+  // Lấy tất cả card sản phẩm
+  getCards() {
+    return cy.get('.product-card');
+  }
+
+
+
+  // Loading danh sách
+  getLoadingList() {
+    return cy.get('[data-testid="loading-list"]');
+  }
+
+  // Error danh sách
+  getErrorList() {
+    return cy.get('[data-testid="error-list"]');
+  }
+
+  // Container danh sách sản phẩm
+  getProductListContainer() {
+    return cy.get('[data-testid="product-list-container"]');
+  }
+
+  // Lấy tất cả item sản phẩm
+  getProductItems() {
+    return cy.get('[data-testid="product-item"]');
+  }
+
+  // Lấy sản phẩm theo tên
+  getProductInList(name) {
+    return cy.contains('[data-testid="product-item"]', name);
+  }
+
+
+}
 export default ProductPage;
