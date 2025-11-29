@@ -3,22 +3,22 @@ class ProductPage {
     cy.visit('/products');
   }
 
-  // Grid danh sách sản phẩm
+  // Grid danh sách sản phẩm (ProductGrid.jsx có class="products-grid")
   getGrid() {
     return cy.get('.products-grid');
   }
 
-  // Card từng sản phẩm
+  // Card từng sản phẩm (ProductCard.jsx có class="product-card")
   getCards() {
     return cy.get('.product-card');
   }
 
-  // Nút Add to Cart trong card
+  // Nút Add to Cart trong card (ProductCard.jsx có <button>)
   clickAddToCart(index = 0) {
     cy.get('.product-card button').eq(index).click();
   }
 
-  // Form tạo/chỉnh sửa sản phẩm
+  // Form tạo/chỉnh sửa sản phẩm (ProductForm.jsx có data-testid="product-form")
   getForm() {
     return cy.get('[data-testid="product-form"]');
   }
@@ -33,17 +33,17 @@ class ProductPage {
     cy.get('[data-testid="product-form"]').submit();
   }
 
-  // Thông báo thành công (role="alert")
+  // Thông báo thành công (ProductForm.jsx có <p role="alert">)
   getSuccessMessage() {
     return cy.get('[role="alert"]');
   }
 
-  // Lấy sản phẩm trong danh sách theo tên (ProductList có data-testid="product-item")
+  // Lấy sản phẩm trong danh sách theo tên (ProductList.jsx có data-testid="product-item")
   getProductInList(name) {
     return cy.contains('[data-testid="product-item"]', name);
   }
 
-  // Loading và error trong ProductList
+  // Loading và error trong ProductList.jsx
   getLoadingList() {
     return cy.get('[data-testid="loading-list"]');
   }
@@ -52,7 +52,7 @@ class ProductPage {
     return cy.get('[data-testid="error-list"]');
   }
 
-  // Chi tiết sản phẩm
+  // Chi tiết sản phẩm (ProductDetail.jsx có data-testid="product-detail")
   getProductDetail() {
     return cy.get('[data-testid="product-detail"]');
   }
