@@ -1,39 +1,55 @@
-// cypress/pages/ProductPage.js
-
 class ProductPage {
   visit() {
     cy.visit('/products');
   }
 
-  getUsername() {
-    return cy.get('.user-info');
+  clickAddNew() {
+    cy.get('[data-testid="add-product-btn"]').click();
   }
 
-  clickLogout() {
-    cy.get('.logout-btn').click();
+  fillProductForm(product) {
+    cy.get('[data-testid="product-name"]').clear().type(product.name);
+    cy.get('[data-testid="product-price"]').clear().type(product.price);
+    cy.get('[data-testid="product-quantity"]').clear().type(product.quantity);
   }
 
-  getProductItems() {
-    return cy.get('.product-card');
+  submitForm() {
+    cy.get('[data-testid="submit-btn"]').click();
   }
 
-  getProductByName(name) {
-    return cy.contains('.product-card', name);
+  getSuccessMessage() {
+    return cy.get('[data-testid="success-message"]');
   }
 
-  clickAddToCart(name) {
-    this.getProductByName(name)
-      .find('button')
-      .contains('Add to Cart')
+  getProductInList(name) {
+    return cy.contains('[data-testid="product-item"]', name);
+  }
+
+  clickEditProduct(name) {
+    cy.contains('[data-testid="product-item"]', name)
+      .parent()
+      .find('[data-testid="edit-btn"]')
       .click();
   }
 
-  getCartItems() {
-  return cy.get('.cart-items'); // hoặc selector đúng với component Cart của bạn
+  clickDeleteProduct(name) {
+    cy.contains('[data-testid="product-item"]', name)
+      .parent()
+      .find('[data-testid="delete-btn"]')
+      .click();
   }
 
-  verifyProductInCart(name) {
-    this.getCartItems().contains(name).should('exist');
+  confirmDelete() {
+    cy.get('[data-testid="confirm-delete-btn"]').click();
+  }
+
+  searchProduct(keyword) {
+    cy.get('[data-testid="search-input"]').clear().type(keyword);
+    cy.get('[data-testid="search-btn"]').click();
+  }
+
+  getFilteredProduct(name) {
+    return cy.contains('[data-testid="product-item"]', name);
   }
 }
 
