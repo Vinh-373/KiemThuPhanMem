@@ -7,6 +7,7 @@ class ProductPage {
   getCards() {
     return cy.get('.product-card');
   }
+
   // Lấy ảnh sản phẩm trong card
   getProductImage(index = 0) {
     return cy.get('.product-card').eq(index).find('.product-img');
@@ -39,12 +40,8 @@ class ProductPage {
 
   // Click nút Add to Cart
   clickAddToCart(index = 0) {
-    cy.get('.product-card').eq(index).find('button').click();
+    cy.get('.product-card').eq(index).find('.btn-add-cart').click();
   }
-
-
-
-
 
   // Trạng thái loading chi tiết
   getLoadingDetail() {
@@ -69,19 +66,16 @@ class ProductPage {
     return cy.get('[data-testid="product-price"]');
   }
 
-
-
-
-  // Lấy form sản phẩm (có data-testid="product-form")
+  // Lấy form sản phẩm
   getForm() {
     return cy.get('[data-testid="product-form"]');
   }
 
   // Điền dữ liệu vào form: tên, giá, số lượng
   fillProductForm(product) {
-    cy.get('input[aria-label="Ten san pham"]').clear().type(product.name);
-    cy.get('input[aria-label="Gia"]').clear().type(product.price);
-    cy.get('input[aria-label="So luong"]').clear().type(product.quantity);
+    cy.get('#name').clear().type(product.name);
+    cy.get('#price').clear().type(product.price);
+    cy.get('#quantity').clear().type(product.quantity);
   }
 
   // Submit form
@@ -89,19 +83,15 @@ class ProductPage {
     this.getForm().submit();
   }
 
-  // Lấy thông báo thành công / lỗi (role="alert")
+  // Lấy thông báo thành công / lỗi
   getSuccessMessage() {
     return cy.get('[role="alert"]');
   }
 
-  // Lấy thông báo loading khi edit (text "Đang tải dữ liệu...")
+  // Lấy thông báo loading khi edit
   getLoadingMessage() {
     return cy.contains('Đang tải dữ liệu...');
   }
-
-
-
-
 
   // Grid chứa danh sách sản phẩm
   getGrid() {
@@ -112,13 +102,6 @@ class ProductPage {
   getNoProductsMessage() {
     return cy.get('.no-products');
   }
-
-  // Lấy tất cả card sản phẩm
-  getCards() {
-    return cy.get('.product-card');
-  }
-
-
 
   // Loading danh sách
   getLoadingList() {
@@ -145,14 +128,7 @@ class ProductPage {
     return cy.contains('[data-testid="product-item"]', name);
   }
 
-
-
-
-
-
-
-
-// Click nút Edit sản phẩm trong card
+  // Click nút Edit sản phẩm trong card
   clickEditProduct(index = 0) {
     cy.get('.product-card').eq(index).find('.btn-edit').click();
   }
@@ -162,16 +138,16 @@ class ProductPage {
     cy.get('.product-card').eq(index).find('.btn-delete').click();
   }
 
-  // Xác nhận xóa (ví dụ popup confirm)
+  // Xác nhận xóa (popup confirm)
   confirmDelete() {
-    cy.get('.btn-delete').click();
+    cy.contains('button', 'Delete').click();
   }
 
   // Điền dữ liệu cập nhật sản phẩm
   updateProductForm(product) {
-    cy.get('input[aria-label="Ten san pham"]').clear().type(product.name);
-    cy.get('input[aria-label="Gia"]').clear().type(product.price);
-    cy.get('input[aria-label="So luong"]').clear().type(product.quantity);
+    cy.get('#name').clear().type(product.name);
+    cy.get('#price').clear().type(product.price);
+    cy.get('#quantity').clear().type(product.quantity);
   }
 
   // Submit form cập nhật
@@ -181,23 +157,13 @@ class ProductPage {
 
   // Thông báo sau khi xóa
   getDeleteSuccessMessage() {
-    return cy.get('[role="alert"]').contains('Xóa thành công');
+    return cy.get('[role="alert"]').contains('Xóa sản phẩm thành công');
   }
 
   // Thông báo sau khi cập nhật
   getUpdateSuccessMessage() {
-    return cy.get('[role="alert"]').contains('Cập nhật thành công');
+    return cy.get('[role="alert"]').contains('Cập nhật sản phẩm thành công');
   }
-
-
-
-
-
-
-
-
-
-  
-
 }
+
 export default ProductPage;
