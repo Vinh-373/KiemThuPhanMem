@@ -154,17 +154,17 @@ class ProductPage {
 
 // Click nút Edit sản phẩm trong card
   clickEditProduct(index = 0) {
-    cy.get('.product-card').eq(index).find('[data-testid="edit-button"]').click();
+    cy.get('.product-card').eq(index).find('btn-edit').click();
   }
 
   // Click nút Delete sản phẩm trong card
   clickDeleteProduct(index = 0) {
-    cy.get('.product-card').eq(index).find('[data-testid="delete-button"]').click();
+    cy.get('.product-card').eq(index).find('.btn-delete').click();
   }
 
   // Xác nhận xóa (ví dụ popup confirm)
   confirmDelete() {
-    cy.get('[data-testid="confirm-delete"]').click();
+    cy.get('.btn-delete').click();
   }
 
   // Điền dữ liệu cập nhật sản phẩm
