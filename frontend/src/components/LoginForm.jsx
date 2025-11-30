@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import '../styles/AuthForm.css';
 
-export const API_URL = 'http://localhost:8080/api'
+export const API_URL = 'http://localhost:5000/api'
 
 export default function LoginForm({ onLoginSuccess, onToggleMode }) {
   const [username, setUsername] = useState('');
