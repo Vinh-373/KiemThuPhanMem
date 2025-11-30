@@ -20,23 +20,29 @@ describe('Product E2E Tests', () => {
   });
 
   it('Có thể thêm sản phẩm mới qua form', () => {
+    // mở form thêm sản phẩm
+    productPage.clickAddProductButton();
     productPage.getForm().should('exist');
+
     productPage.fillProductForm({
       name: 'Laptop Dell',
       price: '15000000',
       quantity: '10'
     });
+
     productPage.submitForm();
     productPage.getSuccessMessage().should('contain', 'Thêm sản phẩm thành công');
   });
 
   it('Có thể cập nhật sản phẩm', () => {
     productPage.clickEditProduct(0); // mở form edit sản phẩm đầu tiên
+
     productPage.updateProductForm({
       name: 'Laptop Dell Updated',
       price: '16000000',
       quantity: '8'
     });
+
     productPage.submitUpdate();
     productPage.getUpdateSuccessMessage().should('contain', 'Cập nhật sản phẩm thành công');
   });
