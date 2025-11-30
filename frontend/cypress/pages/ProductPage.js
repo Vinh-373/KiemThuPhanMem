@@ -3,6 +3,16 @@ class ProductPage {
     cy.visit('/products');
   }
 
+  // Grid chứa danh sách sản phẩm
+  getGrid() {
+    return cy.get('.products-grid');
+  }
+
+  // Thông báo khi không có sản phẩm
+  getNoProductsMessage() {
+    return cy.get('.no-products');
+  }
+
   // Lấy tất cả card sản phẩm
   getCards() {
     return cy.get('.product-card');
@@ -43,6 +53,63 @@ class ProductPage {
     cy.get('.product-card').eq(index).find('.btn-add-cart').click();
   }
 
+  // Click nút Edit sản phẩm trong card
+  clickEditProduct(index = 0) {
+    cy.get('.product-card').eq(index).find('.btn-edit').click();
+  }
+
+  // Click nút Delete sản phẩm trong card
+  clickDeleteProduct(index = 0) {
+    cy.get('.product-card').eq(index).find('.btn-delete').click();
+  }
+
+  // Nút thêm sản phẩm mới
+  clickAddProductButton() {
+    cy.get('.btn-add-product').click();
+  }
+
+  // Lấy form sản phẩm
+  getForm() {
+    return cy.get('[data-testid="product-form"]');
+  }
+
+  // Điền dữ liệu vào form: tên, giá, số lượng
+  fillProductForm(product) {
+    cy.get('#name').clear().type(product.name);
+    cy.get('#price').clear().type(product.price);
+    cy.get('#quantity').clear().type(product.quantity);
+  }
+
+  // Submit form
+  submitForm() {
+    this.getForm().submit();
+  }
+
+  // Điền dữ liệu cập nhật sản phẩm
+  updateProductForm(product) {
+    cy.get('#name').clear().type(product.name);
+    cy.get('#price').clear().type(product.price);
+    cy.get('#quantity').clear().type(product.quantity);
+  }
+
+  // Submit form cập nhật
+  submitUpdate() {
+    cy.get('.product-form').submit();
+  }
+
+  // Thông báo thành công / lỗi
+  getSuccessMessage() {
+    return cy.get('[role="alert"]');
+  }
+
+  getDeleteSuccessMessage() {
+    return cy.get('[role="alert"]').contains('Xóa sản phẩm thành công');
+  }
+
+  getUpdateSuccessMessage() {
+    return cy.get('[role="alert"]').contains('Cập nhật sản phẩm thành công');
+  }
+
   // Trạng thái loading chi tiết
   getLoadingDetail() {
     return cy.get('[data-testid="loading-detail"]');
@@ -64,43 +131,6 @@ class ProductPage {
 
   getProductPrice() {
     return cy.get('[data-testid="product-price"]');
-  }
-
-  // Lấy form sản phẩm
-  getForm() {
-    return cy.get('[data-testid="product-form"]');
-  }
-
-  // Điền dữ liệu vào form: tên, giá, số lượng
-  fillProductForm(product) {
-    cy.get('#name').clear().type(product.name);
-    cy.get('#price').clear().type(product.price);
-    cy.get('#quantity').clear().type(product.quantity);
-  }
-
-  // Submit form
-  submitForm() {
-    this.getForm().submit();
-  }
-
-  // Lấy thông báo thành công / lỗi
-  getSuccessMessage() {
-    return cy.get('[role="alert"]');
-  }
-
-  // Lấy thông báo loading khi edit
-  getLoadingMessage() {
-    return cy.contains('Đang tải dữ liệu...');
-  }
-
-  // Grid chứa danh sách sản phẩm
-  getGrid() {
-    return cy.get('.products-grid');
-  }
-
-  // Thông báo khi không có sản phẩm
-  getNoProductsMessage() {
-    return cy.get('.no-products');
   }
 
   // Loading danh sách
@@ -126,43 +156,6 @@ class ProductPage {
   // Lấy sản phẩm theo tên
   getProductInList(name) {
     return cy.contains('[data-testid="product-item"]', name);
-  }
-
-  // Click nút Edit sản phẩm trong card
-  clickEditProduct(index = 0) {
-    cy.get('.product-card').eq(index).find('.btn-edit').click();
-  }
-
-  // Click nút Delete sản phẩm trong card
-  clickDeleteProduct(index = 0) {
-    cy.get('.product-card').eq(index).find('.btn-delete').click();
-  }
-
-  // Xác nhận xóa (popup confirm)
-  confirmDelete() {
-    cy.contains('button', 'Delete').click();
-  }
-
-  // Điền dữ liệu cập nhật sản phẩm
-  updateProductForm(product) {
-    cy.get('#name').clear().type(product.name);
-    cy.get('#price').clear().type(product.price);
-    cy.get('#quantity').clear().type(product.quantity);
-  }
-
-  // Submit form cập nhật
-  submitUpdate() {
-    cy.get('.product-form').submit();
-  }
-
-  // Thông báo sau khi xóa
-  getDeleteSuccessMessage() {
-    return cy.get('[role="alert"]').contains('Xóa sản phẩm thành công');
-  }
-
-  // Thông báo sau khi cập nhật
-  getUpdateSuccessMessage() {
-    return cy.get('[role="alert"]').contains('Cập nhật sản phẩm thành công');
   }
 }
 
