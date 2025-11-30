@@ -50,19 +50,29 @@ jobs:
           cd backend
           mvn clean install -DskipTests
 
-      - name: Start backend server
+      - name: Run Backend Unit Tests
         run: |
           cd backend
-          mvn spring-boot:run &
-        env:
-          SPRING_PROFILES_ACTIVE: test
+          ./mvnw test
 
       - name: Install Frontend Dependencies
         run: |
           cd frontend
           npm install
 
-      - name: Start frontend vite dev server
+      - name: Run Frontend Unit Tests with Coverage
+        run: |
+          cd frontend
+          npm test -- --coverage
+
+      - name: Start Backend Server
+        run: |
+          cd backend
+          mvn spring-boot:run &
+        env:
+          SPRING_PROFILES_ACTIVE: test
+
+      - name: Start Frontend Vite Dev Server
         run: |
           cd frontend
           npm run dev -- --host &
@@ -76,3 +86,8 @@ jobs:
         run: |
           cd frontend
           npx cypress run --browser chrome
+
+      - name: Upload Coverage to Codecov
+        uses: codecov/codecov-action@v2
+        with:
+          files: ./frontend/coverage/lcov.info,./backend/target/site/jacoco/jacoco.xml
