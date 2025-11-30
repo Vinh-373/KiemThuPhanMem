@@ -186,4 +186,52 @@ class ProductServiceTest {
         assertEquals(p1.getName(), dtoList.get(0).getName());
         assertEquals(p2.getName(), dtoList.get(1).getName());
     }
+
+    @Test
+    @DisplayName("TC15: get_AllProduct() phải trả về list rỗng")
+    void testGetAllProduct_ReturnEmptyList() {
+        List<ProductDto> result = productService.get_AllProduct();
+
+        assertNotNull(result);
+        assertTrue(result.isEmpty());
+    }
+    @Test
+    @DisplayName("TC16: get_ProductById() luôn trả về null")
+    void testGetProductById_ReturnNull() {
+        ProductDto result = productService.get_ProductById(10L);
+
+        assertNull(result);
+    }
+    @Test
+    @DisplayName("TC17: create_Product() phải set Id không null")
+    void testTaoSanPham() {
+        ProductDto dto = new ProductDto();
+        dto.setName("Laptop");
+        dto.setPrice(1000.0);
+
+        ProductDto created = productService.create_Product(dto);
+
+        assertNotNull(created.getId());
+        assertEquals("Laptop", created.getName());
+        assertEquals(1000.0, created.getPrice());
+    }
+    @Test
+    @DisplayName("TC18: update_Product() phải set id mới")
+    void testCapNhatSanPham() {
+        ProductDto dto = new ProductDto();
+        dto.setName("Phone");
+        dto.setPrice(500.0);
+
+        ProductDto updated = productService.update_Product(99L, dto);
+
+        assertEquals(99L, updated.getId());
+        assertEquals("Phone", updated.getName());
+        assertEquals(500.0, updated.getPrice());
+    }
+    @Test
+    @DisplayName("TC19: delete_Product() không được throw exception")
+    void testXoaSanPham() {
+        assertDoesNotThrow(() -> productService.delete_Product(123L));
+    }
+
 }
