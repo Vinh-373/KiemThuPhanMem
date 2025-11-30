@@ -52,7 +52,10 @@ class ProductPage {
   clickEditProduct(index = 0) {
     cy.get('.product-card').eq(index).find('.btn-edit').click();
   }
-
+  // để xử lý popup (cửa sổ nhỏ hiện lên) confirm khi xóa
+  confirmDelete() {
+    cy.on('window:confirm', () => true); // tự động bấm OK
+  }
   // Click nút Delete sản phẩm trong card
   clickDeleteProduct(index = 0) {
     cy.get('.product-card').eq(index).find('.btn-delete').click();
