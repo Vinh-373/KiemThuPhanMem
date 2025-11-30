@@ -1,106 +1,7 @@
-// import { useState } from 'react';
-// // import { authService } from '../services/authService'; // <--- IMPORT AUTH SERVICE
-// import '../styles/AuthForm.css';
-
-// // Không cần API_URL nữa vì ta dùng service
-// const API_URL = 'http://localhost:8080/api'
-
-// export default function LoginForm({ onLoginSuccess, onToggleMode }) {
-//   const [username, setUsername] = useState('');
-//   const [password, setPassword] = useState('');
-//   const [loading, setLoading] = useState(false);
-//   const [message, setMessage] = useState(''); // Đổi tên state để chứa cả success/error
-//   const [errors, setErrors] = useState({}); // State mới cho validation
-
-//   const handleSubmit = async (e) => {
-//     e.preventDefault();
-//     setMessage('');
-//     setErrors({});
-//     setLoading(true);
-
-//     // --- Bổ sung Validation cho TC-LINT-003 ---
-//     const newErrors = {};
-//     if (!username) newErrors.username = 'Tên đăng nhập không được để trống.';
-//     if (!password) newErrors.password = 'Mật khẩu không được để trống.';
-    
-
-//     if (Object.keys(newErrors).length > 0) {
-//       setErrors(newErrors);
-//       setLoading(false);
-//       return; // Dừng nếu có lỗi validation
-//     }
-//     // ------------------------------------------
-//     try {
-      
-//       const response = await fetch(`${API_URL}/auth/login`, {
-//         method: 'POST',
-//         headers: { 'Content-Type': 'application/json' },
-//         body: JSON.stringify({ username, password })
-//       })
-// const data = await response.json()
-//       if (data.success) {
-
-//         localStorage.setItem('token', data.token);
-//         localStorage.setItem('user', JSON.stringify(data.user));
-//         setMessage(data.message);
-//         // Chờ một chút để message hiển thị rồi chuyển trang (hoặc gọi ngay nếu không cần message)
-//         setTimeout(onLoginSuccess, 100); 
-
-//       } else {
-//         setMessage(data.message); // Hiển thị thông báo thất bại
-//       }
-//     } catch (err) {
-//       // Xử lý lỗi từ `throw new Error` trong service (ví dụ: API không trả về JSON, lỗi mạng)
-//       setMessage(err.message); 
-//     } finally {
-//       setLoading(false);
-//     }
-//   };
-// // SỬ DỤNG AUTH SERVICE ĐÃ ĐƯỢC MOCK
-//       // const data = await authService.loginUser(username, password);
-//   return (
-//     <form onSubmit={handleSubmit} className="auth-form">
-//       <h2>Login</h2>
-//       {/* Sử dụng message state để hiển thị thông báo success/error */}
-//       {message && <div className={`message-box ${message.includes('thành công') ? 'success' : 'error'}`} data-testid="login-message">{message}</div>}
-
-//       <input
-//         type="text"
-//         name="username"
-//         placeholder="Username"
-//         value={username}
-//         onChange={(e) => setUsername(e.target.value)}
-//         data-testid="username-input" // ĐÃ THÊM data-testid
-//       />
-//       {/* Hiển thị lỗi validation cho username */}
-//       {errors.username && <div data-testid="username-error" style={{ color: 'red' }}>{errors.username}</div>}
-
-//       <input
-//         type="password"
-//         name="password"
-//         placeholder="Password"
-//         value={password}
-//         onChange={(e) => setPassword(e.target.value)}
-//         data-testid="password-input" // ĐÃ THÊM data-testid
-//       />
-//       {/* Hiển thị lỗi validation cho password */}
-//       {errors.password && <div data-testid="password-error" style={{ color: 'red' }}>{errors.password}</div>}
-
-//       <button type="submit" disabled={loading} data-testid="login-button"> {/* ĐÃ THÊM data-testid */}
-//         {loading ? 'Loading...' : 'Login'}
-//       </button>
-
-//       <p className="toggle-text">
-//         Don't have an account?{' '}
-//         <span onClick={onToggleMode} className="toggle-link">Register</span>
-//       </p>
-//     </form>
-//   );
-// }
 import { useState } from 'react';
 import '../styles/AuthForm.css';
 
-const API_URL = 'http://localhost:8080/api'
+export const API_URL = 'http://localhost:8080/api'
 
 export default function LoginForm({ onLoginSuccess, onToggleMode }) {
   const [username, setUsername] = useState('');
@@ -115,7 +16,6 @@ export default function LoginForm({ onLoginSuccess, onToggleMode }) {
     setErrors({});
     setLoading(true);
 
-    // Validation
     const newErrors = {};
     if (!username) newErrors.username = 'Tên đăng nhập không được để trống.';
     if (!password) newErrors.password = 'Mật khẩu không được để trống.';
@@ -133,30 +33,28 @@ export default function LoginForm({ onLoginSuccess, onToggleMode }) {
         body: JSON.stringify({ username, password })
       });
 
-      // Kiểm tra response status
+      let data = { success: false, message: 'Đăng nhập thất bại' };
+
+      try {
+        data = await response.json();
+      } catch {}
+
       if (!response.ok) {
-        throw new Error(`HTTP Error: ${response.status}`);
+        throw new Error(data.message || `HTTP Error ${response.status}`);
       }
 
-      const data = await response.json();
-       console.log('Response from server:', data);
-
       if (data.success) {
-        // Lưu token và user info
         localStorage.setItem('token', data.token);
         localStorage.setItem('user', JSON.stringify(data.user));
-        setMessage(data.message);
         
-        // Gọi callback ngay lập tức (không cần setTimeout)
-        // Router sẽ tự xử lý navigation
+        setMessage(data.message || 'Đăng nhập thành công');
         onLoginSuccess();
-
       } else {
         setMessage(data.message || 'Đăng nhập thất bại');
       }
+
     } catch (err) {
-      console.error('Login error:', err);
-      setMessage(err.message || 'Lỗi kết nối. Vui lòng thử lại.');
+      setMessage(err.message || 'Lỗi kết nối');
     } finally {
       setLoading(false);
     }
@@ -165,7 +63,7 @@ export default function LoginForm({ onLoginSuccess, onToggleMode }) {
   return (
     <form onSubmit={handleSubmit} className="auth-form">
       <h2>Login</h2>
-      
+
       {message && (
         <div 
           className={`message-box ${message.includes('thành công') ? 'success' : 'error'}`} 
