@@ -154,7 +154,7 @@ class ProductPage {
 
 // Click nút Edit sản phẩm trong card
   clickEditProduct(index = 0) {
-    cy.get('.product-card').eq(index).find('btn-edit').click();
+    cy.get('.product-card').eq(index).find('.btn-edit').click();
   }
 
   // Click nút Delete sản phẩm trong card
@@ -176,7 +176,7 @@ class ProductPage {
 
   // Submit form cập nhật
   submitUpdate() {
-    cy.get('[data-testid="product-form"]').submit();
+    cy.get('.product-form').submit();
   }
 
   // Thông báo sau khi xóa
