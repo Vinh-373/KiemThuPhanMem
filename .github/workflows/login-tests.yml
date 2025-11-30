@@ -6,7 +6,6 @@ on:
   pull_request:
     branches: [ main ]
 
-
 concurrency:
   group: login-tests
   cancel-in-progress: true
@@ -32,9 +31,16 @@ jobs:
         working-directory: frontend
         run: npm install cypress --save-dev
 
-      - name: Start Frontend Server
+      # FIX IMPORTANT
+      - name: Build Frontend
         working-directory: frontend
-        run: npm run dev &
+        run: npm run build
+
+      - name: Start Production Server
+        working-directory: frontend
+        run: |
+          npm install -g serve
+          serve -s dist -l 5173 &
 
       - name: Wait for Frontend
         run: npx wait-on http://localhost:5173
