@@ -1,9 +1,11 @@
 class LoginPage {
   elements = {
-    usernameInput: () => cy.get('input[placeholder="Username"]'),
-    passwordInput: () => cy.get('input[placeholder="Password"]'),
-    loginButton: () => cy.contains("button", "Login"),
-    message: () => cy.get(".error-message"),
+    usernameInput: () => cy.get('[data-testid="username-input"]'),
+    passwordInput: () => cy.get('[data-testid="password-input"]'),
+    loginButton: () => cy.get('[data-testid="login-button"]'),
+    loginMessage: () => cy.get('[data-testid="login-message"]'),
+    usernameError: () => cy.get('[data-testid="username-error"]'),
+    passwordError: () => cy.get('[data-testid="password-error"]'),
   };
 
   visit() {

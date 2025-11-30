@@ -1,39 +1,40 @@
-// const LoginPage = require("../../cypress/pages/LoginPage");
+const LoginPage = require("../pages/LoginPage");
 
-// describe("Login E2E Tests", () => {
-//   beforeEach(() => {
-//     LoginPage.visit();
-//   });
+describe("Login E2E Tests", () => {
+  beforeEach(() => {
+    LoginPage.visit();
+  });
 
-//   // (d) UI Elements visibility
-//   it("Should display login form", () => {
-//     LoginPage.elements.usernameInput().should("be.visible");
-//     LoginPage.elements.passwordInput().should("be.visible");
-//     LoginPage.elements.loginButton().should("be.visible");
-//   });
+  
+  it("Should display login form", () => {
+    LoginPage.elements.usernameInput().should("be.visible");
+    LoginPage.elements.passwordInput().should("be.visible");
+    LoginPage.elements.loginButton().should("be.visible");
+  });
 
-//   // (a) Should show error when using valid-looking credentials (vì API đang FAILED)
-//   it("Should login but show fetch failed error (API offline)", () => {
-//     LoginPage.login("testuser", "Test123");
+  
+  it("Should login successfully with valid credentials", () => {
+  LoginPage.login("Minh", "123");
+  LoginPage.elements
+    .loginMessage()
+    .should("be.visible");
+});
 
-//     cy.contains("Failed to fetch").should("be.visible");
-//   });
+ 
+  it("Should show validation errors when fields empty", () => {
+    LoginPage.elements.loginButton().click();
 
-//   // (b) Should show validation message when fields empty
-//   it("Should show validation errors", () => {
-//     LoginPage.elements.loginButton().click();
+    LoginPage.elements.usernameError().should("be.visible");
+    LoginPage.elements.passwordError().should("be.visible");
+  });
 
-//     // UI thật hiển thị balloon của HTML5 → kiểm tra qua pseudo validation
-//     LoginPage.elements.usernameInput().then(($input) => {
-//       expect($input[0].validationMessage).to.not.be.empty;
-//     });
-//   });
+  
+  it("Should show error when credentials invalid", () => {
+    LoginPage.login("saiUser", "saiPass");
 
-//   // (c) Invalid credentials → API vẫn FAILED nên vẫn ra cùng 1 lỗi
-//   it("Should show error with invalid credentials", () => {
-//     LoginPage.login("ab", "123");
-
-//     cy.contains("Failed to fetch").should("be.visible");
-//   });
-// });
-
+    LoginPage.elements
+      .loginMessage()
+      .should("be.visible")
+      .and("contain", "không đúng"); 
+  });
+});

@@ -1,40 +1,43 @@
 name: Login Tests CI
 
-# on:
-#   push:
-#     branches: [ main, develop ]
-#   pull_request:
-#     branches: [ main ]
+on:
+  push:
+    branches: [ main, develop ]
+  pull_request:
+    branches: [ main ]
 
-# jobs:
-#   test-login:
-#     runs-on: ubuntu-latest
+jobs:
+  test-login:
+    runs-on: ubuntu-latest
 
-#     steps:
-#       - uses: actions/checkout@v2
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v3
 
-#       - name: Setup Node.js
-#         uses: actions/setup-node@v2
-#         with:
-#           node-version: '18'
+      - name: Setup Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: "18"
 
-#       - name: Install dependencies
-#         run: |
-#           cd frontend
-#           npm install
+      - name: Install Dependencies
+        run: |
+          cd frontend
+          npm install
 
-#       - name: Run Login Unit Tests
-#         run: echo "Skipping unit tests"
+      - name: Run Login Unit Tests
+        run: |
+          cd frontend
+          npm test -- --testPathPattern=Login
 
-#       - name: Run Login E2E Tests
-#         run: |
-#           cd frontend
-#           npx cypress run --spec "cypress/e2e/login.e2e.spec.js"
+      - name: Run Login E2E Tests
+        run: |
+          cd frontend
+          npx cypress run --spec "cypress/e2e/login.e2e.spec.js"
 
-
-#       - name: Upload test reports
-#         uses: actions/upload-artifact@v4
-#         with:
-#           name: cypress-report
-#           path: cypress/videos
-
+      - name: Upload Cypress Videos & Screenshots
+        uses: actions/upload-artifact@v3
+        with:
+          name: cypress-report
+          path: |
+            frontend/cypress/videos
+            frontend/cypress/screenshots
