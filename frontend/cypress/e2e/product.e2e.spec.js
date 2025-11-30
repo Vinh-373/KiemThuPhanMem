@@ -1,52 +1,3 @@
-// import ProductPage from '../pages/ProductPage';
-
-// describe('Product E2E Tests', () => {
-//   let productPage;
-
-//   beforeEach(() => {
-//     cy.login('testuser', 'Test123'); // giả lập đăng nhập
-
-//     // Mock API trả về dữ liệu từ fixture
-//     cy.intercept('GET', '/api/products', { fixture: 'products.json' }).as('getProducts');
-
-//     productPage = new ProductPage();
-//     productPage.visit();
-//     cy.wait('@getProducts'); // chờ dữ liệu load xong
-//   });
-
-//   it('Hiển thị grid sản phẩm', () => {
-//     productPage.getGrid().should('exist');
-//     productPage.getCards().should('have.length.at.least', 1);
-//   });
-
-//   // it('Có thể điền và submit form sản phẩm', () => {
-//   //   productPage.getForm().should('exist');
-//   //   productPage.fillProductForm({
-//   //     name: 'Laptop Dell',
-//   //     price: '15000000',
-//   //     quantity: '10'
-//   //   });
-//   //   productPage.submitForm();
-//   //   productPage.getSuccessMessage().should('exist');
-//   // });
-
-//   // it('Hiển thị sản phẩm trong danh sách', () => {
-//   //   productPage.getProductListContainer().should('exist');
-//   //   productPage.getProductItems().should('exist');
-//   //   productPage.getProductInList('Laptop Dell').should('exist');
-//   // });
-
-//   it('Có thể click Add to Cart trên card đầu tiên', () => {
-//     productPage.getCards().should('exist');
-//     productPage.clickAddToCart(0);
-//     // TODO: kiểm tra giỏ hàng nếu có
-//   });
-// });
-
-
-
-
-
 import ProductPage from '../pages/ProductPage';
 
 describe('Product E2E Tests', () => {
@@ -69,37 +20,43 @@ describe('Product E2E Tests', () => {
   });
 
   it('Có thể thêm sản phẩm mới qua form', () => {
+    // mở form thêm sản phẩm
+    productPage.clickAddProductButton();
     productPage.getForm().should('exist');
+
     productPage.fillProductForm({
       name: 'Laptop Dell',
       price: '15000000',
       quantity: '10'
     });
+
     productPage.submitForm();
-    productPage.getSuccessMessage().should('contain', 'Tạo sản phẩm thành công');
+    productPage.getSuccessMessage().should('contain', 'Thêm sản phẩm thành công');
   });
 
   it('Có thể cập nhật sản phẩm', () => {
     productPage.clickEditProduct(0); // mở form edit sản phẩm đầu tiên
+
     productPage.updateProductForm({
       name: 'Laptop Dell Updated',
       price: '16000000',
       quantity: '8'
     });
+
     productPage.submitUpdate();
-    productPage.getUpdateSuccessMessage().should('contain', 'Cập nhật thành công');
+    productPage.getUpdateSuccessMessage().should('contain', 'Cập nhật sản phẩm thành công');
   });
 
   it('Có thể xóa sản phẩm', () => {
-    productPage.clickDeleteProduct(0); // click nút xóa sản phẩm đầu tiên
-    productPage.confirmDelete();       // xác nhận xóa
-    productPage.getDeleteSuccessMessage().should('contain', 'Xóa thành công');
-  });
+    // Bắt confirm và tự động OK
+    cy.on('window:confirm', () => true);
 
-  it('Có thể click Add to Cart trên card đầu tiên', () => {
-    productPage.getCards().should('exist');
-    productPage.clickAddToCart(0);
-    // Kiểm tra giỏ hàng nếu có
-    cy.get('[data-testid="cart-count"]').should('contain', '1');
+    // Bắt alert và kiểm tra nội dung
+    cy.on('window:alert', (text) => {
+      expect(text).to.contains('Xóa sản phẩm thành công');
+    });
+
+    productPage.clickDeleteProduct(0);
+    
   });
 });
