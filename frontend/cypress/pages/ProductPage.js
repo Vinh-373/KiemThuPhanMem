@@ -146,5 +146,58 @@ class ProductPage {
   }
 
 
+
+
+
+
+
+
+// Click nút Edit sản phẩm trong card
+  clickEditProduct(index = 0) {
+    cy.get('.product-card').eq(index).find('[data-testid="edit-button"]').click();
+  }
+
+  // Click nút Delete sản phẩm trong card
+  clickDeleteProduct(index = 0) {
+    cy.get('.product-card').eq(index).find('[data-testid="delete-button"]').click();
+  }
+
+  // Xác nhận xóa (ví dụ popup confirm)
+  confirmDelete() {
+    cy.get('[data-testid="confirm-delete"]').click();
+  }
+
+  // Điền dữ liệu cập nhật sản phẩm
+  updateProductForm(product) {
+    cy.get('input[aria-label="Ten san pham"]').clear().type(product.name);
+    cy.get('input[aria-label="Gia"]').clear().type(product.price);
+    cy.get('input[aria-label="So luong"]').clear().type(product.quantity);
+  }
+
+  // Submit form cập nhật
+  submitUpdate() {
+    cy.get('[data-testid="product-form"]').submit();
+  }
+
+  // Thông báo sau khi xóa
+  getDeleteSuccessMessage() {
+    return cy.get('[role="alert"]').contains('Xóa thành công');
+  }
+
+  // Thông báo sau khi cập nhật
+  getUpdateSuccessMessage() {
+    return cy.get('[role="alert"]').contains('Cập nhật thành công');
+  }
+
+
+
+
+
+
+
+
+
+  
+
 }
 export default ProductPage;
