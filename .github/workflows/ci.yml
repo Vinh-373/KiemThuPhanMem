@@ -1,64 +1,78 @@
-name: Fullstack CI
+name: CICD for Thuong
 
 on:
   push:
-    branches:
-      - main
+    branches: [ main ]
   pull_request:
+    branches: [ main ]
 
 jobs:
-  build-fontend:
+  test:
     runs-on: ubuntu-latest
-    container:
-      image: node:20
+
+    services:
+      postgres:
+        image: postgres:14
+        ports:
+          - 5432:5432
+        env:
+          POSTGRES_DB: testdb
+          POSTGRES_USER: postgres
+          POSTGRES_PASSWORD: password
+        options: >-
+          --health-cmd="pg_isready"
+          --health-interval=10s
+          --health-timeout=5s
+          --health-retries=5
+
+    env:
+      POSTGRES_DB: testdb
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: password
+
     steps:
-      - name: Checkout code
+      - name: Checkout source code
         uses: actions/checkout@v4
 
-      - name: Install fontend dependencies
-        run: npm install
-        working-directory: ./fontend
-
-      - name: Build fontend
-        run: npm run build
-        working-directory: ./fontend
-
-      - name: Upload Cypress screenshots
-        uses: actions/upload-artifact@v4
+      - name: Setup Java
+        uses: actions/setup-java@v4
         with:
-          name: cypress-screenshots
-          path: ./cypress/screenshots
+          distribution: 'temurin'
+          java-version: '17'
 
-      - name: Upload Cypress videos
-        uses: actions/upload-artifact@v4
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
         with:
-          name: cypress-videos
-          path: ./cypress/videos
+          node-version: '22'
 
-  build-backend:
-    runs-on: ubuntu-latest
-    container:
-      image: maven:3.9.2-eclipse-temurin-20
-    steps:
-      - name: Checkout repository
-        uses: actions/checkout@v4
-
-      # Kiểm tra thư mục backend có pom.xml
-      - name: Check backend folder
-        run: |
-          ls backend
-          pwd
-
-      # Build backend
-      - name: Build backend
+      - name: Install Backend Dependencies
         run: |
           cd backend
-          mvn clean package
+          mvn clean install -DskipTests
 
-      # Upload file jar
-      - name: Upload backend jar
-        uses: actions/upload-artifact@v4
-        with:
-          name: backend-jar
-          path: backend/target/*.jar
+      - name: Start backend server
+        run: |
+          cd backend
+          mvn spring-boot:run &
+        env:
+          SPRING_PROFILES_ACTIVE: test
 
+      - name: Install Frontend Dependencies
+        run: |
+          cd frontend
+          npm install
+
+      - name: Start frontend vite dev server
+        run: |
+          cd frontend
+          npm run dev -- --host &
+          sleep 10
+
+      - name: Debug — check frontend is running
+        run: |
+          curl -I http://localhost:5173
+
+      - name: Run Cypress E2E Tests
+        run: |
+          cd frontend
+          npx cypress run --browser chrome

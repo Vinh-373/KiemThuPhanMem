@@ -9,6 +9,7 @@ export default function LoginRegister() {
   const navigate = useNavigate()
 
   const handleLoginSuccess = () => {
+    console.log('Login success callback called');
     navigate('/products')
   }
 

@@ -1,0 +1,20 @@
+[
+  {
+    "id": 1,
+    "name": "Laptop Dell",
+    "company": "Dell",
+    "description": "Laptop văn phòng",
+    "quantity": 10,
+    "price": 15000000,
+    "img": "/images/dell.png"
+  },
+  {
+    "id": 2,
+    "name": "MacBook Pro",
+    "company": "Apple",
+    "description": "Laptop cho developer",
+    "quantity": 5,
+    "price": 45000000,
+    "img": "/images/macbook.png"
+  }
+]

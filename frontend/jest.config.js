@@ -1,8 +1,12 @@
-export default {
-  testEnvironment: "jsdom",
+module.exports = {
   transform: {
-    "^.+\\.[jt]sx?$": "babel-jest"
+    "^.+\\.[jt]sx?$": "babel-jest",
   },
-  moduleFileExtensions: ["js", "jsx"],
-  setupFilesAfterEnv: ["@testing-library/jest-dom"]
+  testEnvironment: "jsdom",
+  setupFilesAfterEnv: ["<rootDir>/setupTests.js"],   // 👈 thêm dòng này
+  testPathIgnorePatterns: ["/node_modules/", "/cypress/"],
+  moduleNameMapper: {
+    "^.+\\.css$": "identity-obj-proxy",
+    "^@/(.*)$": "<rootDir>/src/$1",
+  },
 };

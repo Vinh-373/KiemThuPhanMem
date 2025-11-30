@@ -1,1 +1,14 @@
+com\flogin\entity\User.class
+com\flogin\dto\LoginResponse.class
+com\flogin\repository\UserRepository.class
+com\flogin\dto\LoginRequest.class
+com\flogin\service\ValidationService.class
+com\flogin\dto\UserDto.class
+com\flogin\config\SecurityConfig.class
+com\flogin\entity\Product.class
+com\flogin\config\CorsConfig.class
 com\flogin\App.class
+com\flogin\repository\ProductRepository.class
+com\flogin\dto\RegisterRequest.class
+com\flogin\dto\ProductDto.class
+com\flogin\model\Product.class

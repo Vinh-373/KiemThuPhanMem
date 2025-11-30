@@ -14,7 +14,7 @@ public class SecurityConfig {
             .csrf(csrf -> csrf.disable()) // Cách dùng mới của Spring Security 6
             .authorizeHttpRequests(auth -> auth
                 // ⭐️ Thêm /api/products vào danh sách công khai
-                .requestMatchers("/api/auth/**", "/api/products").permitAll() 
+                .requestMatchers("/api/auth/**", "/api/products/**").permitAll() 
                 .anyRequest().authenticated()
             )
             .httpBasic(basic -> {}); // Tắt Basic Auth mặc định hoặc cấu hình lại

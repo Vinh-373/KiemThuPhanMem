@@ -1,7 +1,27 @@
+// import ProductCard from './ProductCard'
+// import '../styles/ProductGrid.css'
+
+// export default function ProductGrid({ products, onAddToCart }) {
+//   if (!products || products.length === 0) {
+//     return <div className="no-products">No products available</div>
+//   }
+
+//   return (
+//     <div className="products-grid">
+//       {products.map((product) => (
+//         <ProductCard 
+//           key={product.id} 
+//           product={product}
+//           onAddToCart={onAddToCart}
+//         />
+//       ))}
+//     </div>
+//   )
+// }
 import ProductCard from './ProductCard'
 import '../styles/ProductGrid.css'
 
-export default function ProductGrid({ products, onAddToCart }) {
+export default function ProductGrid({ products, onAddToCart, onEdit, onDelete }) {
   if (!products || products.length === 0) {
     return <div className="no-products">No products available</div>
   }
@@ -13,6 +33,8 @@ export default function ProductGrid({ products, onAddToCart }) {
           key={product.id} 
           product={product}
           onAddToCart={onAddToCart}
+          onEdit={onEdit}
+          onDelete={onDelete}
         />
       ))}
     </div>
