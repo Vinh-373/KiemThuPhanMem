@@ -53,7 +53,7 @@ jobs:
       - name: Run Backend Unit Tests
         run: |
           cd backend
-          ./mvnw test
+          mvn test
 
       - name: Install Frontend Dependencies
         run: |
