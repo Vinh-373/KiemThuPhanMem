@@ -26,7 +26,12 @@ export default function ProductCard({ product, onEdit, onDelete }) {
       <p className="price">{product.price} VNĐ</p>
       
       <div className="product-actions">
-
+        {/* <button 
+          className="btn-add-cart"
+          onClick={() => onAddToCart(product)}
+        >
+          Add to Cart
+        </button> */}
         
         {onEdit && (
           <button 
