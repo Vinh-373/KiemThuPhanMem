@@ -54,7 +54,12 @@ class ProductPage {
   }
   // để xử lý popup (cửa sổ nhỏ hiện lên) confirm khi xóa
   confirmDelete() {
-    cy.on('window:confirm', () => true); // tự động bấm OK
+    // Tự động click OK khi gặp window.confirm
+    cy.on('window:confirm', () => true);
+    // Nếu có alert sau khi xóa, cũng bắt luôn
+    cy.on('window:alert', (text) => {
+      expect(text).to.contains('Xóa sản phẩm thành công');
+    });
   }
   // Click nút Delete sản phẩm trong card
   clickDeleteProduct(index = 0) {
