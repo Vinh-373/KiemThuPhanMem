@@ -46,7 +46,7 @@
 //     public ResponseEntity<ProductDto> updateProduct(@PathVariable Long id, @RequestBody ProductDto productDto) {
 //         // Sử dụng update_Product
 //         ProductDto updatedProduct = productService.update_Product(id, productDto);
-        
+
 //         // Giả định: Nếu update_Product trả về null/hoặc có lỗi thì coi là 404 (tùy thuộc vào logic Service)
 //         // Hiện tại, Service giả định của bạn luôn trả về DTO với ID, nên chúng ta sẽ giả định thành công.
 //         // Tuy nhiên, trong môi trường thực, cần xử lý lỗi Not Found. Ở đây ta giả định thành công cho test pass.
@@ -81,6 +81,7 @@ import java.util.stream.Collectors;
 @CrossOrigin(origins = "http://localhost:3000")
 public class ProductController {
 
+
     private final ProductRepository productRepository;
 
     public ProductController(ProductRepository productRepository) {
@@ -94,20 +95,20 @@ public class ProductController {
         List<ProductDto> productDtos = products.stream()
                 .map(ProductDto::new)
                 .collect(Collectors.toList());
-        
+
         return ResponseEntity.ok(productDtos);
     }
 
     // GET /api/products/{id} - Lấy sản phẩm theo ID
     @GetMapping("/{id}")
-    
+
     public ResponseEntity<ProductDto> getProductById(@PathVariable Integer id) {
         Product product = productRepository.findById(id).orElse(null);
-        
+
         if (product == null) {
             return ResponseEntity.notFound().build();
         }
-        
+
         return ResponseEntity.ok(new ProductDto(product));
     }
 
@@ -124,7 +125,7 @@ public class ProductController {
         product.setStatus((int) 1);
         product.setCreatedAt(new Timestamp(System.currentTimeMillis()));
         product.setUpdatedAt(new Timestamp(System.currentTimeMillis()));
-        
+
         Product savedProduct = productRepository.save(product);
         return new ResponseEntity<>(new ProductDto(savedProduct), HttpStatus.CREATED);
     }
@@ -133,11 +134,11 @@ public class ProductController {
     @PutMapping("/{id}")
     public ResponseEntity<ProductDto> updateProduct(@PathVariable Integer id, @RequestBody ProductDto productDto) {
         Product product = productRepository.findById(id).orElse(null);
-        
+
         if (product == null) {
             return ResponseEntity.notFound().build();
         }
-        
+
         if (productDto.getName() != null) {
             product.setName(productDto.getName());
         }
@@ -156,12 +157,12 @@ public class ProductController {
         if (productDto.getImg() != null) {
             product.setImg(productDto.getImg());
         }
-        if (productDto.getStatus() ==1 || productDto.getStatus() ==0) {
+        if (productDto.getStatus() == 1 || productDto.getStatus() == 0) {
             product.setStatus(productDto.getStatus());
         }
-        
+
         product.setUpdatedAt(new Timestamp(System.currentTimeMillis()));
-        
+
         Product updatedProduct = productRepository.save(product);
         return ResponseEntity.ok(new ProductDto(updatedProduct));
     }
@@ -172,8 +173,10 @@ public class ProductController {
         if (!productRepository.existsById(id)) {
             return ResponseEntity.notFound().build();
         }
-        
+
         productRepository.deleteById(id);
         return ResponseEntity.noContent().build();
     }
+
+    
 }

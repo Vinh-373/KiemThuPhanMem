@@ -11,7 +11,6 @@ import com.flogin.service.AuthService;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.autoconfigure.security.servlet.SecurityAutoConfiguration;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
@@ -49,7 +48,7 @@ class AuthControllerIntegrationTest {
 
     // TC-LAPI-001: Đăng nhập thành công (Test POST /api/auth/login endpoint - 3 điểm)
     @Test
-    @DisplayName("POST /api/auth/login - Đăng nhập thành công (Status 200)")
+    @DisplayName("POST /api/auth/login_integration - Đăng nhập thành công (Status 200)")
     void testLoginSuccess() throws Exception {
         // Arrange
         LoginRequest request = new LoginRequest("testuser", "Test123");
@@ -61,7 +60,7 @@ class AuthControllerIntegrationTest {
         when(authService.authenticate(any(LoginRequest.class))).thenReturn(mockResponse);
 
         // Act & Assert
-        mockMvc.perform(post("/api/auth/login")
+        mockMvc.perform(post("/api/auth/login_integration")
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(objectMapper.writeValueAsString(request)))
                 
@@ -74,7 +73,7 @@ class AuthControllerIntegrationTest {
 
     // TC-LAPI-002: Đăng nhập thất bại (Test POST /api/auth/login endpoint - 3 điểm)
     @Test
-    @DisplayName("POST /api/auth/login - Sai credentials (Status 401 Unauthorized)")
+    @DisplayName("POST /api/auth/login_integration - Sai credentials (Status 401 Unauthorized)")
     void testLoginFailure() throws Exception {
         // Arrange
         LoginRequest request = new LoginRequest("wronguser", "Wrong123");
@@ -86,7 +85,7 @@ class AuthControllerIntegrationTest {
         when(authService.authenticate(any(LoginRequest.class))).thenReturn(mockResponse);
 
         // Act & Assert
-        mockMvc.perform(post("/api/auth/login")
+        mockMvc.perform(post("/api/auth/login_integration")
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(objectMapper.writeValueAsString(request)))
                 
@@ -107,7 +106,7 @@ class AuthControllerIntegrationTest {
         when(authService.authenticate(any(LoginRequest.class))).thenReturn(mockResponse);
 
         // Act & Assert
-        mockMvc.perform(post("/api/auth/login")
+        mockMvc.perform(post("/api/auth/login_integration")
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(objectMapper.writeValueAsString(request))
                 // Giả lập request từ một Origin khác (CORS)

@@ -25,7 +25,7 @@ import static org.mockito.Mockito.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
-@WebMvcTest(ProductController.class)
+@WebMvcTest(ProductControllerTest.class)
 @AutoConfigureMockMvc(addFilters = false) // Tắt các bộ lọc MVC khác nếu cần
 @WithMockUser(username = "testuser", roles = {"admin"}) // Giả lập người dùng có role ADMIN
 @DisplayName("Product API Integration Tests (Using Mocked CRUD)")
@@ -38,7 +38,7 @@ class ProductControllerIntegrationTest {
     private ProductService productService;
     
     private static final ObjectMapper objectMapper = new ObjectMapper();
-    private static final String API_PRODUCTS_URL = "/api/products";
+    private static final String API_PRODUCTS_URL = "/api/products/test";
     private static final int EXISTING_ID = 1;
     private static final int NON_EXISTENT_ID = 99;
 

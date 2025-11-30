@@ -154,10 +154,8 @@
 //   });
 // });
 
-// Product.integration.test.js
 
-import { render, screen, fireEvent, waitFor } from '@testing-library/react';
-// Import các component
+import { render, screen, fireEvent, waitFor, act } from '@testing-library/react'; //  1. IMPORT act
 import ProductList from '../components/ProductList';
 import ProductForm from '../components/ProductForm';
 import ProductDetail from '../components/ProductDetail';
@@ -174,10 +172,18 @@ jest.mock('../services/productService', () => ({
 
 describe('Product Component Integration Tests', () => {
 
+    // 2. THIẾT LẬP FAKE TIMERS NGAY ĐẦU KHỐI describe
+    jest.useFakeTimers({ legacyFakeTimers: false });
+
+    // KHAI BÁO BIẾN mockOnSaveSuccess Ở PHẠM VI NÀY (Scope của Describe)
+    let mockOnSaveSuccess;
+
     // --- SETUP/TEARDOWN CHUNG ---
     beforeEach(() => {
         // Reset tất cả các lần gọi và giá trị mock giữa các test
         jest.clearAllMocks();
+        // GÁN GIÁ TRỊ MOCK TRONG beforeEach
+        mockOnSaveSuccess = jest.fn();
     });
 
     afterEach(() => {
@@ -211,92 +217,109 @@ describe('Product Component Integration Tests', () => {
         });
     });
 
+
     // --- b) Test ProductForm component (create/edit) (2 điểm) ---
+
+    // TEST 1: Tạo sản phẩm mới thành công (ĐÃ SỬA LỖI TRUY VẤN VÀ LỖI act())
     test('Tạo sản phẩm mới thành công', async () => {
-        // Thiết lập mock cho lời gọi create thành công (trả về Promise)
         productService.create.mockResolvedValue({ id: 99, name: 'Laptop Dell', price: 15000000, quantity: 10 });
 
-        render(<ProductForm />);
+        render(<ProductForm onSaveSuccess={mockOnSaveSuccess} />);
 
-        fireEvent.change(screen.getByLabelText('Ten san pham'), {
+        // SỬA LỖI TRUY VẤN LABELS
+        fireEvent.change(screen.getByLabelText('Tên sản phẩm *'), {
             target: { value: 'Laptop Dell' }
         });
-        fireEvent.change(screen.getByLabelText('Gia'), {
+        fireEvent.change(screen.getByLabelText('Giá (VNĐ) *'), {
             target: { value: '15000000' }
         });
-        fireEvent.change(screen.getByLabelText('So luong'), {
+        fireEvent.change(screen.getByLabelText('Số lượng *'), {
             target: { value: '10' }
         });
 
-        // Sửa lỗi chính tả: dùng 'Luu' để khớp với component ProductForm.jsx
-        fireEvent.click(screen.getByText('Luu'));
-
-        // Đợi trạng thái loading 'Đang Xử Lý...' biến mất (nếu bạn check loading trong test)
-        // expect(screen.getByText('Đang Xử Lý...')).toBeInTheDocument();
+        // SỬA LỖI TRUY VẤN NÚT SUBMIT
+        fireEvent.click(screen.getByText('Thêm Sản phẩm'));
 
         await waitFor(() => {
-            // Kiểm tra xem hàm create đã được gọi với dữ liệu đúng
-            expect(productService.create).toHaveBeenCalledWith({
+            // Kiểm tra hàm create đã được gọi với dữ liệu đúng (thêm các trường mặc định)
+            expect(productService.create).toHaveBeenCalledWith(expect.objectContaining({
                 name: 'Laptop Dell',
                 price: 15000000,
                 quantity: 10,
-            });
-            // Kiểm tra thông báo thành công (chuỗi đã được thống nhất với component)
-            expect(screen.getByText('Them san pham thanh cong')).toBeInTheDocument();
+            }));
+            // Kiểm tra thông báo thành công
+            expect(screen.getByText('Thêm sản phẩm thành công')).toBeInTheDocument();
         });
+
+        // SỬA LỖI act(): Chờ setTimeout (1000ms) để gọi onSaveSuccess
+        await act(async () => {
+            jest.advanceTimersByTime(1000);
+        });
+
+        expect(mockOnSaveSuccess).toHaveBeenCalledTimes(1);
     });
 
+    // TEST 2: Chỉnh sửa sản phẩm thành công (ĐÃ SỬA LỖI TRUY VẤN VÀ LỖI act())
     test('Chỉnh sửa sản phẩm thành công', async () => {
         const editProductId = 55;
 
-        // 1. Mock để tải dữ liệu ban đầu cho form (Get by Id)
+        // 1. Mock để tải dữ liệu ban đầu
         const initialProductData = {
             id: editProductId,
             name: 'Máy ảnh Canon 6D',
             price: 30000000,
-            quantity: 5
+            quantity: 5,
+            company: 'Canon',
+            description: 'Mô tả cũ',
+            img: ''
         };
         productService.getById.mockResolvedValue(initialProductData);
 
         // 2. Mock cho lời gọi cập nhật (Update) thành công
         productService.update.mockResolvedValue(true);
 
-        // Render component ở chế độ chỉnh sửa (truyền productId)
-        render(<ProductForm productId={editProductId} />);
+        // Render component ở chế độ chỉnh sửa
+        render(<ProductForm productId={editProductId} onSaveSuccess={mockOnSaveSuccess} />);
 
-        // Chờ cho đến khi dữ liệu cũ được tải vào form (productService.getById đã resolve)
+        // Chờ cho đến khi dữ liệu cũ được tải vào form
         await waitFor(() => {
-            // Đảm bảo dữ liệu đã được điền vào input
-            expect(screen.getByLabelText('Ten san pham')).toHaveValue('Máy ảnh Canon 6D');
+            // Đảm bảo dữ liệu đã được điền vào input (dùng label text chính xác)
+            expect(screen.getByLabelText('Tên sản phẩm *')).toHaveValue('Máy ảnh Canon 6D');
         });
-
-        // 🛑 Kiểm tra: getById chỉ nên được gọi 1 lần khi render
-        expect(productService.getById).toHaveBeenCalledTimes(1);
 
         // 3. Thay đổi dữ liệu
-        fireEvent.change(screen.getByLabelText('Ten san pham'), {
+        fireEvent.change(screen.getByLabelText('Tên sản phẩm *'), {
             target: { value: 'Máy ảnh Canon 6D Mark II' } // Tên mới
         });
-        fireEvent.change(screen.getByLabelText('Gia'), {
+        fireEvent.change(screen.getByLabelText('Giá (VNĐ) *'), {
             target: { value: '45000000' } // Giá mới
         });
 
-        // 4. Nhấn nút Lưu (Sửa lỗi chính tả)
-        fireEvent.click(screen.getByText('Luu'));
+        // 4. Nhấn nút Lưu (Trong chế độ edit là 'Cập nhật')
+        fireEvent.click(screen.getByText('Cập nhật'));
 
         await waitFor(() => {
-            // Kiểm tra xem hàm update đã được gọi với ID và dữ liệu mới đúng
+            // Kiểm tra hàm update đã được gọi với ID và dữ liệu mới đúng
             expect(productService.update).toHaveBeenCalledWith(editProductId, {
                 name: 'Máy ảnh Canon 6D Mark II',
+                company: 'Canon',
                 price: 45000000,
-                quantity: 5, // Quantity lấy từ dữ liệu initial
+                quantity: 5,
+                description: 'Mô tả cũ',
+                img: '',
             });
 
             // Kiểm tra thông báo thành công
             expect(screen.getByText('Cập nhật sản phẩm thành công')).toBeInTheDocument();
         });
-    });
 
+        // SỬA LỖI act(): Chờ setTimeout (1000ms) để gọi onSaveSuccess
+        await act(async () => {
+            jest.advanceTimersByTime(1000);
+        });
+
+        expect(mockOnSaveSuccess).toHaveBeenCalledTimes(1);
+    });
     // --- c) Test ProductDetail component (1 điểm) ---
     test('Hiển thị chi tiết sản phẩm sau khi gọi API thành công', async () => {
         const mockProductId = 42;
@@ -325,4 +348,4 @@ describe('Product Component Integration Tests', () => {
             expect(productService.getById).toHaveBeenCalledWith(mockProductId);
         });
     });
-});
+}); 

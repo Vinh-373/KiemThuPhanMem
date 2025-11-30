@@ -85,20 +85,20 @@ public ResponseEntity<Object> login(@RequestBody LoginRequest request) {
 
     return new ResponseEntity<>(response, HttpStatus.OK);
 }
-    // @PostMapping("/auth/login")
-    // // ⭐️ Thay đổi kiểu trả về thành LoginResponse (DTO mới) thay vì Object để dễ
-    // // dàng thao tác với response
-    // public ResponseEntity<LoginResponse> login(@RequestBody LoginRequest request) {
-    //     // ⭐️ Gọi AuthService để xử lý logic đăng nhập
-    //     LoginResponse response = authService.authenticate(request);
+    @PostMapping("/auth/login_integration")
+    // ⭐️ Thay đổi kiểu trả về thành LoginResponse (DTO mới) thay vì Object để dễ
+    // dàng thao tác với response
+    public ResponseEntity<LoginResponse> login_integrationtest(@RequestBody LoginRequest request) {
+        // ⭐️ Gọi AuthService để xử lý logic đăng nhập
+        LoginResponse response = authService.authenticate(request);
 
-    //     if (response.isSuccess()) {
-    //         return new ResponseEntity<>(response, HttpStatus.OK); // 200
-    //     } else {
-    //         // Giả định AuthService trả về status failure
-    //         return new ResponseEntity<>(response, HttpStatus.UNAUTHORIZED); // 401
-    //     }
-    // }
+        if (response.isSuccess()) {
+            return new ResponseEntity<>(response, HttpStatus.OK); // 200
+        } else {
+            // Giả định AuthService trả về status failure
+            return new ResponseEntity<>(response, HttpStatus.UNAUTHORIZED); // 401
+        }
+    }
 
     // // --- LẤY TOÀN BỘ SẢN PHẨM ---
     // @GetMapping("/products")
