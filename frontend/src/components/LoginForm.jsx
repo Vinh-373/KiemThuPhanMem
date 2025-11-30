@@ -22,13 +22,7 @@ export default function LoginForm({ onLoginSuccess, onToggleMode }) {
     }
 
     try {
-
-      // ⛔ Bỏ fetch
-      // const response = await fetch....
-
-      // ✔ Dùng authService
       const data = await authService.loginUser(username, password);
-
       if (data.success) {
         localStorage.setItem('token', data.token);
         localStorage.setItem('user', JSON.stringify(data.user));
@@ -44,5 +38,4 @@ export default function LoginForm({ onLoginSuccess, onToggleMode }) {
       setLoading(false);
     }
   };
-...
 }
