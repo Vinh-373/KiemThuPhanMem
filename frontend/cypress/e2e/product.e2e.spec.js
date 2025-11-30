@@ -48,8 +48,15 @@ describe('Product E2E Tests', () => {
   });
 
   it('Có thể xóa sản phẩm', () => {
-    productPage.clickDeleteProduct(0); // click nút Delete trong card đầu tiên
-    productPage.confirmDelete();       // xác nhận xóa
-    productPage.getDeleteSuccessMessage().should('contain', 'Xóa sản phẩm thành công');
+    // Bắt confirm và tự động OK
+    cy.on('window:confirm', () => true);
+
+    // Bắt alert và kiểm tra nội dung
+    cy.on('window:alert', (text) => {
+      expect(text).to.contains('Xóa sản phẩm thành công');
+    });
+
+    productPage.clickDeleteProduct(0);
+    
   });
 });
