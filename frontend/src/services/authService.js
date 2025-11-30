@@ -31,4 +31,4 @@ loginUser: async (username, password) => {
       user: null,
     };
   }
-},
+}
