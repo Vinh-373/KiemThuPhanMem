@@ -44,7 +44,7 @@ class ProductPage {
   }
 
   // Lấy giá sản phẩm
-  getProductPrice(index = 0) {
+  getCardProductPrice(index = 0) {
     return cy.get('.product-card').eq(index).find('.price');
   }
 
