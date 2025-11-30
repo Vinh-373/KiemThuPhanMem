@@ -5,7 +5,6 @@ import { authService } from '../services/authService';
 export const API_URL = 'http://localhost:5000/api';
 
 export default function LoginForm({ onLoginSuccess, onToggleMode }) {
-  ...
   const handleSubmit = async (e) => {
     e.preventDefault();
     setMessage('');
