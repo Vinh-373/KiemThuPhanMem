@@ -6,6 +6,11 @@ on:
   pull_request:
     branches: [ main ]
 
+
+concurrency:
+  group: login-tests
+  cancel-in-progress: true
+
 jobs:
   test-login:
     runs-on: ubuntu-latest
