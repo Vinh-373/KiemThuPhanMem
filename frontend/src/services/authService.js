@@ -1,28 +1,34 @@
-const API_BASE_URL = "/api";
+loginUser: async (username, password) => {
+  try {
+    const res = await fetch(`${API_BASE_URL}/auth/login`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ username, password }),
+    });
 
-const authService = {
-  /**
-   * Gửi request POST /api/auth/login
-   * Trả về JSON response
-   */
-  loginUser: async (username, password) => {
+    let data = { success: false, message: "Đăng nhập thất bại" };
+
     try {
-      const res = await fetch(`${API_BASE_URL}/auth/login`, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ username, password }),
-      });
+      data = await res.json();
+    } catch {}
 
-      return await res.json();  // 🔥 trả về object JSON
-    } catch (error) {
+    if (!res.ok) {
       return {
         success: false,
-        message: error.message || "Lỗi kết nối server",
+        message: data.message || `HTTP Error ${res.status}`,
         token: null,
         user: null,
       };
     }
-  },
-};
 
-export default authService;
+    return data;
+
+  } catch (error) {
+    return {
+      success: false,
+      message: error.message || "Lỗi kết nối server",
+      token: null,
+      user: null,
+    };
+  }
+},
