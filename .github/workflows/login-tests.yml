@@ -12,30 +12,34 @@ jobs:
 
     steps:
       - name: Checkout Code
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
 
       - name: Setup Node.js
-        uses: actions/setup-node@v3
+        uses: actions/setup-node@v4
         with:
           node-version: "18"
 
-      - name: Install Dependencies
-        run: |
-          cd frontend
-          npm install
+      - name: Install Frontend Dependencies
+        working-directory: frontend
+        run: npm install
 
-      - name: Run Login Unit Tests
-        run: |
-          cd frontend
-          npm test -- --testPathPattern=Login
+      - name: Install Cypress
+        working-directory: frontend
+        run: npm install cypress --save-dev
 
-      - name: Run Login E2E Tests
-        run: |
-          cd frontend
-          npx cypress run --spec "cypress/e2e/login.e2e.spec.js"
+      - name: Start Frontend Server
+        working-directory: frontend
+        run: npm run dev &
+
+      - name: Wait for Frontend
+        run: npx wait-on http://localhost:5173
+
+      - name: Run E2E Login Tests
+        working-directory: frontend
+        run: npx cypress run --spec "cypress/e2e/login.e2e.spec.js"
 
       - name: Upload Cypress Videos & Screenshots
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: cypress-report
           path: |
