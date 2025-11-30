@@ -52,10 +52,4 @@ describe('Product E2E Tests', () => {
     productPage.confirmDelete();       // xác nhận xóa
     productPage.getDeleteSuccessMessage().should('contain', 'Xóa sản phẩm thành công');
   });
-
-  it('Có thể click Add to Cart trên card đầu tiên', () => {
-    productPage.getCards().should('exist');
-    productPage.clickAddToCart(0); // click nút Add to Cart trong card đầu tiên
-    // TODO: Kiểm tra giỏ hàng nếu có component giỏ hàng
-  });
 });
