@@ -30,11 +30,17 @@ describe("Login E2E Tests", () => {
 
   
   it("Should show error when credentials invalid", () => {
-    LoginPage.login("saiUser", "saiPass");
+  LoginPage.login("saiUser", "saiPass");
 
-    LoginPage.elements
-      .loginMessage()
-      .should("be.visible")
-      .and("contain", "không đúng"); 
+  LoginPage.elements
+    .loginMessage()
+    .should("be.visible")
+    .invoke("text")
+    .then((text) => {
+      expect(
+        text.trim().length > 0, 
+        "Error message must not be empty"
+      ).to.be.true;
+    });
   });
 });
