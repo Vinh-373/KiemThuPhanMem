@@ -48,11 +48,6 @@ class ProductPage {
     return cy.get('.product-card').eq(index).find('.price');
   }
 
-  // Click nút Add to Cart
-  clickAddToCart(index = 0) {
-    cy.get('.product-card').eq(index).find('.btn-add-cart').click();
-  }
-
   // Click nút Edit sản phẩm trong card
   clickEditProduct(index = 0) {
     cy.get('.product-card').eq(index).find('.btn-edit').click();
