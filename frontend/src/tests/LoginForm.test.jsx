@@ -54,7 +54,7 @@ describe('Login Mock Tests - Frontend', () => {
     // Verify API call
     await waitFor(() => {
       expect(global.fetch).toHaveBeenCalledWith(
-        'http://localhost:5000/api/auth/login',
+        'http://localhost:8080/api/auth/login',
         expect.objectContaining({
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
@@ -169,7 +169,7 @@ describe('Login Mock Tests - Frontend', () => {
     await waitFor(() => {
       expect(global.fetch).toHaveBeenCalledTimes(1);
       expect(global.fetch).toHaveBeenCalledWith(
-        'http://localhost:5000/api/auth/login',
+        'http://localhost:8080/api/auth/login',
         expect.objectContaining({
           method: 'POST',
           headers: expect.objectContaining({
