@@ -160,4 +160,94 @@ describe('Product Mock Tests', () => {
         expect(productService.update).toHaveBeenCalledTimes(1);
         expect(productService.remove).toHaveBeenCalledTimes(1);
     });
+
+    // TC-PMOCK-007: Test success scenario - Create product
+    test('Mock: Success scenario - Create product returns new product with ID', async () => {
+        const mockNewProduct = {
+            id: 100,
+            name: 'New Product',
+            price: 5000000,
+            quantity: 15,
+            company: 'New Company'
+        };
+
+        productService.create.mockResolvedValue(mockNewProduct);
+
+        // Act
+        const result = await productService.create({
+            name: 'New Product',
+            price: 5000000,
+            quantity: 15,
+            company: 'New Company'
+        });
+
+        // Assert - Kiểm tra success scenario
+        expect(result).toBeDefined();
+        expect(result.id).toBe(100);
+        expect(result.name).toBe('New Product');
+        expect(result.price).toBe(5000000);
+        expect(productService.create).toHaveBeenCalled();
+    });
+
+    // TC-PMOCK-008: Test failure scenario - Get product by invalid ID
+    test('Mock: Failure scenario - Get product by invalid ID returns null', async () => {
+        productService.getById.mockResolvedValue(null);
+
+        // Act
+        const result = await productService.getById(999);
+
+        // Assert - Kiểm tra failure scenario
+        expect(result).toBeNull();
+        expect(productService.getById).toHaveBeenCalledWith(999);
+    });
+
+    // TC-PMOCK-009: Test failure scenario - Delete non-existent product
+    test('Mock: Failure scenario - Delete non-existent product returns false', async () => {
+        productService.remove.mockResolvedValue(false);
+
+        // Act
+        const result = await productService.remove(999);
+
+        // Assert
+        expect(result).toBe(false);
+        expect(productService.remove).toHaveBeenCalledWith(999);
+    });
+
+    // TC-PMOCK-010: Test success scenario - Update product
+    test('Mock: Success scenario - Update product with new data', async () => {
+        const updatedProduct = {
+            id: 5,
+            name: 'Updated Product Name',
+            price: 7500000,
+            quantity: 25,
+            company: 'Updated Company'
+        };
+
+        productService.update.mockResolvedValue(updatedProduct);
+
+        // Act
+        const result = await productService.update(5, {
+            name: 'Updated Product Name',
+            price: 7500000,
+            quantity: 25,
+            company: 'Updated Company'
+        });
+
+        // Assert
+        expect(result).toBeDefined();
+        expect(result.id).toBe(5);
+        expect(result.name).toBe('Updated Product Name');
+        expect(result.price).toBe(7500000);
+        expect(productService.update).toHaveBeenCalledTimes(1);
+    });
+
+    // TC-PMOCK-011: Test failure scenario - Create product with invalid data
+    test('Mock: Failure scenario - Create product with invalid data throws error', async () => {
+        const error = new Error('Invalid product data');
+        productService.create.mockRejectedValue(error);
+
+        // Act & Assert
+        await expect(productService.create(null)).rejects.toThrow('Invalid product data');
+        expect(productService.create).toHaveBeenCalled();
+    });
 });
