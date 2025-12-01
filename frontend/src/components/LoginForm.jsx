@@ -135,9 +135,20 @@ export default function LoginForm({ onLoginSuccess, onToggleMode }) {
 
       // Kiểm tra response status
       if (!response.ok) {
-          const data = await response.json().catch(() => ({}));
-          throw new Error(data.message || `HTTP Error: ${response.status}`);
+          let message;
+          
+          // Nếu có response.json thì dùng message từ JSON
+          if (typeof response.json === 'function') {
+            const data = await response.json().catch(() => ({}));
+            message = data.message;
+          }
+        
+          // nếu không thì fallback
+          if (!message) message = `HTTP Error: ${response.status}`;
+        
+          throw new Error(message);
       }
+
 
 
       const data = await response.json();
