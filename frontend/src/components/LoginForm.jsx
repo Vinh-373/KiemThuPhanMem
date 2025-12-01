@@ -135,7 +135,8 @@ export default function LoginForm({ onLoginSuccess, onToggleMode }) {
 
       // Kiểm tra response status
       if (!response.ok) {
-         throw new Error(`HTTP Error: ${response.status}`);
+          const data = await response.json().catch(() => ({}));
+          throw new Error(data.message || `HTTP Error: ${response.status}`);
       }
 
 
