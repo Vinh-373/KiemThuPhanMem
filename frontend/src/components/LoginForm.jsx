@@ -135,15 +135,7 @@ export default function LoginForm({ onLoginSuccess, onToggleMode }) {
 
       // Kiểm tra response status
       if (!response.ok) {
-        const text = await response.text();
-        let message = "Đăng nhập thất bại";
-
-        try {
-          const dataError = JSON.parse(text);
-          message = dataError.message || message;
-        } catch (err) {}
-
-        throw new Error(message);
+         throw new Error(`HTTP Error: ${response.status}`);
       }
 
 
@@ -165,7 +157,7 @@ export default function LoginForm({ onLoginSuccess, onToggleMode }) {
       }
     } catch (err) {
       console.error('Login error:', err);
-      setMessage(err.message);
+      setMessage(err.message || 'Lỗi kết nối. Vui lòng thử lại.');
     } finally {
       setLoading(false);
     }
