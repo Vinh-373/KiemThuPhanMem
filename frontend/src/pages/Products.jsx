@@ -70,7 +70,7 @@ import ProductForm from '../components/ProductForm'
 import LoadingSpinner from '../components/LoadingSpinner'
 import '../styles/Products.css'
 
-const API_URL = 'http://localhost:5000/api'
+const API_URL = 'http://localhost:8080/api'
 
 export default function Products() {
   const [products, setProducts] = useState([])
