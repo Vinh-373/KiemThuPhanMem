@@ -29,7 +29,7 @@ class ProductServiceTest {
 
         assertNotNull(created.getId());
         assertEquals("Laptop", created.getName());
-        assertEquals(1000.0, created.getPrice());
+        assertEquals(new BigDecimal("1000"), created.getPrice());
         assertEquals(5, created.getQuantity());
     }
 
@@ -43,7 +43,7 @@ class ProductServiceTest {
         Product updated = productService.updateProduct(created.getId(), updateInfo);
 
         assertEquals("Laptop Pro", updated.getName());
-        assertEquals(1200.0, updated.getPrice());
+        assertEquals(new BigDecimal("1200"), updated.getPrice());
         assertEquals(10, updated.getQuantity());
     }
     @Test
@@ -225,7 +225,7 @@ class ProductServiceTest {
 
         assertNotNull(created.getId());
         assertEquals("Laptop", created.getName());
-        assertEquals(1000.0, created.getPrice());
+        assertEquals(new BigDecimal("1000"), created.getPrice());
     }
     @Test
     @DisplayName("TC18: update_Product() phải set id mới")
@@ -238,7 +238,7 @@ class ProductServiceTest {
 
         assertEquals(99L, updated.getId());
         assertEquals("Phone", updated.getName());
-        assertEquals(500.0, updated.getPrice());
+        assertEquals(new BigDecimal("500"), updated.getPrice());
     }
     @Test
     @DisplayName("TC19: delete_Product() không được throw exception")
