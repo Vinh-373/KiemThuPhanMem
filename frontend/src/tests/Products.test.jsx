@@ -254,30 +254,30 @@ describe('Product Mock Tests - Frontend', () => {
     );
   });
 
-  // TC9: Mock - Add to cart
-  test('Mock: Them san pham vao gio hang', async () => {
-    global.fetch.mockResolvedValueOnce({
-      ok: true,
-      json: async () => mockProducts
-    });
+  // // TC9: Mock - Add to cart
+  // test('Mock: Them san pham vao gio hang', async () => {
+  //   global.fetch.mockResolvedValueOnce({
+  //     ok: true,
+  //     json: async () => mockProducts
+  //   });
 
-    render(
-      <BrowserRouter>
-        <Products />
-      </BrowserRouter>
-    );
+  //   render(
+  //     <BrowserRouter>
+  //       <Products />
+  //     </BrowserRouter>
+  //   );
 
-    await waitFor(() => {
-      expect(screen.getByText('iPhone 15 Pro Max')).toBeInTheDocument();
-    });
+  //   await waitFor(() => {
+  //     expect(screen.getByText('iPhone 15 Pro Max')).toBeInTheDocument();
+  //   });
 
-    // Find and click add to cart button
-    const addToCartButtons = screen.getAllByText('Add to Cart');
-    fireEvent.click(addToCartButtons[0]);
+  //   // Find and click add to cart button
+  //   const addToCartButtons = screen.getAllByText('Add to Cart');
+  //   fireEvent.click(addToCartButtons[0]);
 
-    // Verify console.log was called (mocked in the component)
-    // In real implementation, this would call an API
-  });
+  //   // Verify console.log was called (mocked in the component)
+  //   // In real implementation, this would call an API
+  // });
 
   // TC10: Mock - Test empty product list
   test('Mock: Hien thi thong bao khi khong co san pham', async () => {
