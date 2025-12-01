@@ -1,4 +1,4 @@
 -------------------------------------------------------------------------------
 Test set: com.flogin.controller.AuthControllerMockTest
 -------------------------------------------------------------------------------
-Tests run: 5, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 5.401 s -- in com.flogin.controller.AuthControllerMockTest
+Tests run: 5, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 6.927 s -- in com.flogin.controller.AuthControllerMockTest

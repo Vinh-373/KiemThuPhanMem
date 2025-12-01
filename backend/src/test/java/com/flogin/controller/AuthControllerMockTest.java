@@ -59,14 +59,14 @@ class AuthControllerMockTest {
             true, 
             "Mock: Controller với mocked service thành công", 
             "mock-token-123", 
-            new UserDto("testuser", "test@example.com")
+            new UserDto("testuser", "Test123")
         );
         
         // Cấu hình mock: khi authService.authenticate() được gọi, trả về mockResponse
         when(authService.authenticate(any(LoginRequest.class))).thenReturn(mockResponse);
 
-        // Act & Assert - Gửi request và kiểm tra response
-        mockMvc.perform(post("/api/auth/login")
+        // Act & Assert - Gửi request đến endpoint /api/auth/login_integration (sử dụng authService)
+        mockMvc.perform(post("/api/auth/login_integration")
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(objectMapper.writeValueAsString(request)))
                 
@@ -80,7 +80,7 @@ class AuthControllerMockTest {
     
     // TC-AMOCK-002: Test controller success case với mocked service
     @Test
-    @DisplayName("Test Controller: POST /api/auth/login - Đăng nhập thành công (Mock Service)")
+    @DisplayName("Test Controller: POST /api/auth/login_integration - Đăng nhập thành công (Mock Service)")
     void testLoginControllerSuccess() throws Exception {
         // Arrange
         LoginRequest request = new LoginRequest("admin", "Admin123");
@@ -88,13 +88,13 @@ class AuthControllerMockTest {
             true, 
             "Đăng nhập thành công", 
             "admin-token-456", 
-            new UserDto("admin", "admin@example.com")
+            new UserDto("admin", "Admin123")
         );
         
         when(authService.authenticate(any(LoginRequest.class))).thenReturn(mockResponse);
 
         // Act & Assert
-        mockMvc.perform(post("/api/auth/login")
+        mockMvc.perform(post("/api/auth/login_integration")
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(objectMapper.writeValueAsString(request)))
                 
@@ -106,7 +106,7 @@ class AuthControllerMockTest {
 
     // TC-AMOCK-003: Test controller failure case với mocked service
     @Test
-    @DisplayName("Test Controller: POST /api/auth/login - Sai credentials (Mock Service)")
+    @DisplayName("Test Controller: POST /api/auth/login_integration - Sai credentials (Mock Service)")
     void testLoginControllerFailure() throws Exception {
         // Arrange
         LoginRequest request = new LoginRequest("wronguser", "Wrong123");
@@ -120,7 +120,7 @@ class AuthControllerMockTest {
         when(authService.authenticate(any(LoginRequest.class))).thenReturn(mockResponse);
 
         // Act & Assert
-        mockMvc.perform(post("/api/auth/login")
+        mockMvc.perform(post("/api/auth/login_integration")
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(objectMapper.writeValueAsString(request)))
                 
@@ -140,13 +140,13 @@ class AuthControllerMockTest {
             true, 
             "Thành công", 
             "token123", 
-            new UserDto("testuser", "test@example.com")
+            new UserDto("testuser", "Test123")
         );
         
         when(authService.authenticate(any(LoginRequest.class))).thenReturn(mockResponse);
 
         // Act
-        mockMvc.perform(post("/api/auth/login")
+        mockMvc.perform(post("/api/auth/login_integration")
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(objectMapper.writeValueAsString(request)))
                 .andExpect(status().isOk());
@@ -159,23 +159,19 @@ class AuthControllerMockTest {
     @Test
     @DisplayName("Verify Mock Interactions: Mock không được gọi khi dữ liệu không hợp lệ")
     void testMockNotCalledOnInvalidData() throws Exception {
-        // Arrange - Giả định request thiếu field được validate trước
+        // Arrange - Empty credentials
         LoginRequest request = new LoginRequest("", "");
-
-        // Act - Nếu component validate ở client, mock không được gọi
-        // Lưu ý: Điều này phụ thuộc vào implementation của LoginForm component
-        // Nếu server-side validation, AuthService vẫn sẽ được gọi
+        LoginResponse mockResponse = new LoginResponse(false, "Input không hợp lệ", null, null);
         
-        when(authService.authenticate(any(LoginRequest.class))).thenReturn(
-            new LoginResponse(false, "Input không hợp lệ", null, null)
-        );
+        when(authService.authenticate(any(LoginRequest.class))).thenReturn(mockResponse);
 
-        mockMvc.perform(post("/api/auth/login")
+        // Act
+        mockMvc.perform(post("/api/auth/login_integration")
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(objectMapper.writeValueAsString(request)))
                 .andExpect(status().isUnauthorized());
 
-        // Verify - Mock có thể được gọi tùy vào validation strategy
+        // Verify - Mock được gọi vì validation ở server-side
         verify(authService, times(1)).authenticate(any(LoginRequest.class));
     }
 }

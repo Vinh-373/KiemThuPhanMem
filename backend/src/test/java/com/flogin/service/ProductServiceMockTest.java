@@ -39,7 +39,7 @@ class ProductServiceMockTest {
         // Assert
         assertNotNull(created.getId());
         assertEquals("iPhone 15 Pro", created.getName());
-        assertEquals(32990000, created.getPrice());
+        assertEquals(0, new BigDecimal(32990000).compareTo(created.getPrice()));
         assertEquals(10, created.getQuantity());
         assertEquals("Apple", created.getCompany());
         
@@ -62,7 +62,7 @@ class ProductServiceMockTest {
         // Assert
         assertNotNull(retrieved);
         assertEquals("Samsung Galaxy S24", retrieved.getName());
-        assertEquals(29990000, retrieved.getPrice());
+        assertEquals(0, new BigDecimal(29990000).compareTo(retrieved.getPrice()));
         assertEquals(createdId, retrieved.getId());
     }
 
@@ -85,7 +85,7 @@ class ProductServiceMockTest {
         // Assert
         assertNotNull(updated);
         assertEquals("Xiaomi 14 Pro Max", updated.getName());
-        assertEquals(25990000, updated.getPrice());
+        assertEquals(0, new BigDecimal(25990000).compareTo(updated.getPrice()));
         assertEquals(20, updated.getQuantity());
         assertEquals(createdId, updated.getId());
     }
@@ -170,17 +170,19 @@ class ProductServiceMockTest {
         p.setCompany("Vivo");
         p.setDescription("Flagship phone from Vivo");
         p.setId(55);
+        p.setStatus(1);
 
         // Act
         ProductDto dto = productService.toDto(p);
 
         // Assert
         assertNotNull(dto);
-        assertEquals(55L, dto.getId());
+        assertEquals(55, dto.getId());
         assertEquals("Vivo X100 Pro", dto.getName());
-        assertEquals(24990000, dto.getPrice());
+        assertEquals(0, new BigDecimal(24990000).compareTo(dto.getPrice()));
         assertEquals(12, dto.getQuantity());
         assertEquals("Vivo", dto.getCompany());
+        assertEquals(1, dto.getStatus());
     }
 
     // TC-PSMOCK-009: Test Convert ProductDTO to Product
@@ -189,18 +191,17 @@ class ProductServiceMockTest {
     void testConvertToEntity() {
         // Arrange
         ProductDto dto = new ProductDto(
-    0,                               // id (int nên truyền 0 nếu chưa có)
-    "Google Pixel 8 Pro",           // name
-    "Google",                       // company
-    new BigDecimal(25990000),      // price
-    6,                              // quantity
-    "AI-powered phone",             // description
-    null,                           // img
-    1,                              // status (1 = active)
-    null,                           // createdAt
-    null                            // updatedAt
-);
-
+            0,                               // id (int nên truyền 0 nếu chưa có)
+            "Google Pixel 8 Pro",           // name
+            "Google",                       // company
+            new BigDecimal(25990000),      // price
+            6,                              // quantity
+            "AI-powered phone",             // description
+            null,                           // img
+            1,                              // status (1 = active)
+            null,                           // createdAt
+            null                            // updatedAt
+        );
 
         // Act
         Product entity = productService.toEntity(dto);
@@ -208,9 +209,10 @@ class ProductServiceMockTest {
         // Assert
         assertNotNull(entity);
         assertEquals("Google Pixel 8 Pro", entity.getName());
-        assertEquals(25990000, entity.getPrice());
+        assertEquals(0, new BigDecimal(25990000).compareTo(entity.getPrice()));
         assertEquals(6, entity.getQuantity());
         assertEquals("Google", entity.getCompany());
+        assertEquals(1, entity.getStatus());
     }
 
     // TC-PSMOCK-010: Test Convert Null DTO to Entity
@@ -261,8 +263,10 @@ class ProductServiceMockTest {
         // Arrange
         Product p1 = new Product("Asus ROG Phone", new BigDecimal(27990000), 10);
         p1.setCompany("ASUS");
+        p1.setStatus(1);
         Product p2 = new Product("Realme GT5", new BigDecimal(18990000), 20);
         p2.setCompany("Realme");
+        p2.setStatus(1);
 
         productService.createProduct(p1);
         productService.createProduct(p2);

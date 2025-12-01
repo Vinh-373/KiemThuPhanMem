@@ -93,8 +93,14 @@ describe('Product Mock Tests', () => {
 
     
     // TC-PMOCK-004: Mock Update Product Success
-    test('Mock: Update product thành công - Mock productService.update() trả về true', async () => {
-        productService.update.mockResolvedValue(true);
+    test('Mock: Update product thành công - Mock productService.update() trả về updated product', async () => {
+        const updatedProduct = {
+            id: 1,
+            name: 'Laptop Pro Max',
+            price: 20000000,
+            quantity: 8
+        };
+        productService.update.mockResolvedValue(updatedProduct);
 
         // Act
         const result = await productService.update(1, {
@@ -105,7 +111,9 @@ describe('Product Mock Tests', () => {
 
         // Assert
         expect(productService.update).toHaveBeenCalledTimes(1);
-        expect(result).toBe(true);
+        expect(result.id).toBe(1);
+        expect(result.name).toBe('Laptop Pro Max');
+        expect(result.price).toBe(20000000);
     });
 
     // TC-PMOCK-005: Mock Delete Product Success 
@@ -133,7 +141,9 @@ describe('Product Mock Tests', () => {
         productService.create.mockResolvedValue(
             { id: 2, name: 'Product 2', price: 2000000, quantity: 5 }
         );
-        productService.update.mockResolvedValue(true);
+        productService.update.mockResolvedValue(
+            { id: 2, name: 'Updated Product 2', price: 2000000, quantity: 5 }
+        );
         productService.remove.mockResolvedValue(true);
 
         // Act - Gọi tất cả các mock functions
