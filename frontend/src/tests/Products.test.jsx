@@ -59,7 +59,7 @@ describe('Product Mock Tests - Frontend', () => {
 
     // Verify API called
     await waitFor(() => {
-      expect(global.fetch).toHaveBeenCalledWith('http://localhost:5000/api/products');
+      expect(global.fetch).toHaveBeenCalledWith('http://localhost:8080/api/products');
     });
 
     // Verify products displayed
@@ -108,7 +108,7 @@ describe('Product Mock Tests - Frontend', () => {
 
     // Simulate create product (this would be in a form component)
     // For now, just verify the mock would work
-    const response = await fetch('http://localhost:5000/api/products', {
+    const response = await fetch('http://localhost:8080/api/products', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(newProduct)
@@ -133,7 +133,7 @@ describe('Product Mock Tests - Frontend', () => {
       json: async () => updatedProduct
     });
 
-    const response = await fetch(`http://localhost:5000/api/products/${mockProducts[0].id}`, {
+    const response = await fetch(`http://localhost:8080/api/products/${mockProducts[0].id}`, {
       method: 'PUT',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(updatedProduct)
@@ -141,7 +141,7 @@ describe('Product Mock Tests - Frontend', () => {
     const data = await response.json();
 
     expect(global.fetch).toHaveBeenCalledWith(
-      `http://localhost:5000/api/products/${mockProducts[0].id}`,
+      `http://localhost:8080/api/products/${mockProducts[0].id}`,
       expect.objectContaining({
         method: 'PUT'
       })
@@ -157,13 +157,13 @@ describe('Product Mock Tests - Frontend', () => {
       json: async () => ({ message: 'Xoa san pham thanh cong' })
     });
 
-    const response = await fetch(`http://localhost:5000/api/products/${mockProducts[0].id}`, {
+    const response = await fetch(`http://localhost:8080/api/products/${mockProducts[0].id}`, {
       method: 'DELETE'
     });
     const data = await response.json();
 
     expect(global.fetch).toHaveBeenCalledWith(
-      `http://localhost:5000/api/products/${mockProducts[0].id}`,
+      `http://localhost:8080/api/products/${mockProducts[0].id}`,
       expect.objectContaining({
         method: 'DELETE'
       })
@@ -203,7 +203,7 @@ describe('Product Mock Tests - Frontend', () => {
       json: async () => paginatedResponse
     });
 
-    const response = await fetch('http://localhost:5000/api/products?page=1&limit=20');
+    const response = await fetch('http://localhost:8080/api/products?page=1&limit=20');
     const data = await response.json();
 
     expect(data.data).toEqual(mockProducts);
@@ -218,7 +218,7 @@ describe('Product Mock Tests - Frontend', () => {
       json: async () => mockProducts[0]
     });
 
-    const response = await fetch(`http://localhost:5000/api/products/${mockProducts[0].id}`);
+    const response = await fetch(`http://localhost:8080/api/products/${mockProducts[0].id}`);
     const data = await response.json();
 
     expect(data).toEqual(mockProducts[0]);
@@ -235,21 +235,21 @@ describe('Product Mock Tests - Frontend', () => {
       .mockResolvedValueOnce({ ok: true, json: async () => ({ message: 'Success' }) });
 
     // Call 1: Get all products
-    await fetch('http://localhost:5000/api/products');
+    await fetch('http://localhost:8080/api/products');
     
     // Call 2: Get product by ID
-    await fetch('http://localhost:5000/api/products/1');
+    await fetch('http://localhost:8080/api/products/1');
     
     // Call 3: Delete product
-    await fetch('http://localhost:5000/api/products/1', { method: 'DELETE' });
+    await fetch('http://localhost:8080/api/products/1', { method: 'DELETE' });
 
     // Verify all calls
     expect(global.fetch).toHaveBeenCalledTimes(3);
-    expect(global.fetch).toHaveBeenNthCalledWith(1, 'http://localhost:5000/api/products');
-    expect(global.fetch).toHaveBeenNthCalledWith(2, 'http://localhost:5000/api/products/1');
+    expect(global.fetch).toHaveBeenNthCalledWith(1, 'http://localhost:8080/api/products');
+    expect(global.fetch).toHaveBeenNthCalledWith(2, 'http://localhost:8080/api/products/1');
     expect(global.fetch).toHaveBeenNthCalledWith(
       3, 
-      'http://localhost:5000/api/products/1',
+      'http://localhost:8080/api/products/1',
       expect.objectContaining({ method: 'DELETE' })
     );
   });
