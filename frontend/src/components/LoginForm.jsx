@@ -100,7 +100,7 @@
 import { useState } from 'react';
 import '../styles/AuthForm.css';
 
-const API_URL = 'http://localhost:5000/api'
+const API_URL = 'http://localhost:8080/api'
 
 export default function LoginForm({ onLoginSuccess, onToggleMode }) {
   const [username, setUsername] = useState('');
@@ -135,7 +135,12 @@ export default function LoginForm({ onLoginSuccess, onToggleMode }) {
 
       // Kiểm tra response status
       if (!response.ok) {
-        throw new Error(`HTTP Error: ${response.status}`);
+        let errorData = null;
+        try {
+          errorData = await response.json();
+        } catch (e) {}
+
+        throw new Error(errorData?.message || 'Đăng nhập thất bại');
       }
 
       const data = await response.json();
@@ -156,7 +161,7 @@ export default function LoginForm({ onLoginSuccess, onToggleMode }) {
       }
     } catch (err) {
       console.error('Login error:', err);
-      setMessage(err.message || 'Lỗi kết nối. Vui lòng thử lại.');
+      setMessage(data.message || 'Đăng nhập thất bại');
     } finally {
       setLoading(false);
     }
