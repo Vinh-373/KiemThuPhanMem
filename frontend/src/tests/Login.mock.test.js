@@ -49,7 +49,7 @@ describe('Login Mock Tests', () => {
 
         // Kiểm tra: fetch đã được gọi với đúng URL và dữ liệu
         expect(global.fetch).toHaveBeenCalledWith(
-            'http://localhost:5000/api/auth/login',
+            'http://localhost:8080/api/auth/login',
             expect.objectContaining({
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
@@ -119,7 +119,7 @@ describe('Login Mock Tests', () => {
         await waitFor(() => {
             expect(global.fetch).toHaveBeenCalledTimes(1);
             expect(global.fetch).toHaveBeenCalledWith(
-                'http://localhost:5000/api/auth/login',
+                'http://localhost:8080/api/auth/login',
                 expect.objectContaining({
                     method: 'POST',
                     body: JSON.stringify({ username: 'user1', password: 'pass1' })
