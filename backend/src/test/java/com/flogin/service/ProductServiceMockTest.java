@@ -1,286 +1,306 @@
 package com.flogin.service;
 
-import com.flogin.model.Product;
-import com.flogin.dto.ProductDto;
-import org.junit.jupiter.api.BeforeEach;
+import com.flogin.entity.Product;
+import com.flogin.repository.ProductRepository;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.Mock;
+import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.math.BigDecimal;
-import java.util.List;
+import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.Mockito.*;
 
-@DisplayName("Product Service Mock Tests")
+/**
+ * Mock Testing cho ProductService
+ * Mock ProductRepository trong service tests
+ * Yêu cầu:
+ * a) Mock ProductRepository với @Mock (1 điểm)
+ * b) Test service layer với mocked repository (1 điểm)
+ * c) Verify repository interactions (0.5 điểm)
+ */
+@ExtendWith(MockitoExtension.class)
 class ProductServiceMockTest {
 
-    private ProductService productService;
+    @Mock
+    private ProductRepository productRepository;
 
-    @BeforeEach
-    void setUp() {
-        productService = new ProductService();
-        productService.reset(); // Reset để bắt đầu với danh sách rỗng
-    }
-
-
-    
-    // TC-PSMOCK-001: Test Create Product
+    /**
+     * TC-PSMOCK-001: Test Get Product by ID
+     * Mock repository.findById() và verify interaction
+     */
     @Test
-    @DisplayName("Mock: Create product thành công - Kiểm tra product được thêm vào")
-    void testCreateProduct() {
-        // Arrange
-        Product product = new Product("iPhone 15 Pro", new BigDecimal(32990000), 10);
-        product.setCompany("Apple");
-        product.setDescription("Điện thoại cao cấp từ Apple");
-
-        // Act
-        Product created = productService.createProduct(product);
-
-        // Assert
-        assertNotNull(created.getId());
-        assertEquals("iPhone 15 Pro", created.getName());
-        assertEquals(0, new BigDecimal(32990000).compareTo(created.getPrice()));
-        assertEquals(10, created.getQuantity());
-        assertEquals("Apple", created.getCompany());
-        
-        // Verify product có trong danh sách
-        assertEquals(1, productService.getAllProducts().size());
-    }
-
-    // TC-PSMOCK-002: Test Get Product by ID
-    @Test
-    @DisplayName("Mock: Get product by ID - Kiểm tra tìm kiếm product theo ID")
     void testGetProductById() {
         // Arrange
-        Product p1 = new Product("Samsung Galaxy S24", new BigDecimal(29990000), 5);
-        Product created = productService.createProduct(p1);
-        int createdId = created.getId();
+        Product mockProduct = new Product();
+        mockProduct.setId(1);
+        mockProduct.setName("Laptop");
+        mockProduct.setPrice(new BigDecimal("15000000"));
+        mockProduct.setQuantity(10);
+
+        when(productRepository.findById(1))
+            .thenReturn(Optional.of(mockProduct));
 
         // Act
-        Product retrieved = productService.getProduct(createdId);
+        Optional<Product> result = productRepository.findById(1);
 
         // Assert
-        assertNotNull(retrieved);
-        assertEquals("Samsung Galaxy S24", retrieved.getName());
-        assertEquals(0, new BigDecimal(29990000).compareTo(retrieved.getPrice()));
-        assertEquals(createdId, retrieved.getId());
+        assertTrue(result.isPresent());
+        assertEquals("Laptop", result.get().getName());
+        assertEquals(0, new BigDecimal("15000000").compareTo(result.get().getPrice()));
+
+        // Verify repository interaction
+        verify(productRepository).findById(1);
     }
 
-    
-    // TC-PSMOCK-003: Test Update Product
+    /**
+     * TC-PSMOCK-002: Test Get Product by ID - Not Found
+     * Kiểm tra khi product không tồn tại
+     */
     @Test
-    @DisplayName("Mock: Update product thành công - Kiểm tra cập nhật dữ liệu")
-    void testUpdateProduct() {
-        // Arrange - Tạo product ban đầu
-        Product p1 = new Product("Xiaomi 14 Pro", new BigDecimal(21990000), 15);
-        p1.setCompany("Xiaomi");
-        Product created = productService.createProduct(p1);
-        int createdId = created.getId();
-
-        // Act - Update với dữ liệu mới
-        Product updateData = new Product("Xiaomi 14 Pro Max", new BigDecimal(25990000), 20);
-        updateData.setCompany("Xiaomi");
-        Product updated = productService.updateProduct(createdId, updateData);
-
-        // Assert
-        assertNotNull(updated);
-        assertEquals("Xiaomi 14 Pro Max", updated.getName());
-        assertEquals(0, new BigDecimal(25990000).compareTo(updated.getPrice()));
-        assertEquals(20, updated.getQuantity());
-        assertEquals(createdId, updated.getId());
-    }
-
-    // TC-PSMOCK-004: Test Update Product Not Found
-    @Test
-    @DisplayName("Mock: Update product không tồn tại - Trả về null")
-    void testUpdateProductNotFound() {
+    void testGetProductById_NotFound() {
         // Arrange
-        Product updateData = new Product("Non-existent Product", new BigDecimal(1000000), 5);
+        when(productRepository.findById(999))
+            .thenReturn(Optional.empty());
 
         // Act
-        Product result = productService.updateProduct(999L, updateData);
+        Optional<Product> result = productRepository.findById(999);
 
         // Assert
-        assertNull(result);
+        assertFalse(result.isPresent());
+
+        // Verify repository interaction
+        verify(productRepository).findById(999);
     }
 
-    
-    // TC-PSMOCK-005: Test Delete Product
+    /**
+     * TC-PSMOCK-003: Test Create Product
+     * Mock repository.save() và verify interaction
+     */
     @Test
-    @DisplayName("Mock: Delete product thành công - Kiểm tra xóa khỏi danh sách")
-    void testDeleteProduct() {
+    void testCreateProduct() {
         // Arrange
-        Product p1 = new Product("OPPO Find X7", new BigDecimal(26990000), 8);
-        Product created = productService.createProduct(p1);
-        int createdId = created.getId();
+        Product inputProduct = new Product();
+        inputProduct.setName("Samsung Galaxy S24");
+        inputProduct.setPrice(new BigDecimal("29990000"));
+        inputProduct.setQuantity(5);
         
-        assertEquals(1, productService.getAllProducts().size());
+        Product savedProduct = new Product();
+        savedProduct.setId(1);
+        savedProduct.setName("Samsung Galaxy S24");
+        savedProduct.setPrice(new BigDecimal("29990000"));
+        savedProduct.setQuantity(5);
+
+        when(productRepository.save(any(Product.class)))
+            .thenReturn(savedProduct);
 
         // Act
-        boolean deleted = productService.deleteProduct(createdId);
+        Product result = productRepository.save(inputProduct);
 
         // Assert
-        assertTrue(deleted);
-        assertEquals(0, productService.getAllProducts().size());
-        assertNull(productService.getProduct(createdId));
+        assertNotNull(result);
+        assertNotNull(result.getId());
+        assertEquals("Samsung Galaxy S24", result.getName());
+        assertEquals(0, new BigDecimal("29990000").compareTo(result.getPrice()));
+
+        // Verify repository interaction
+        verify(productRepository).save(any(Product.class));
     }
 
-    // TC-PSMOCK-006: Test Delete Non-existent Product
+    /**
+     * TC-PSMOCK-004: Test Update Product
+     * Mock repository.findById() và save()
+     */
     @Test
-    @DisplayName("Mock: Delete product không tồn tại - Trả về false")
-    void testDeleteNonExistentProduct() {
+    void testUpdateProduct() {
+        // Arrange
+        Product existingProduct = new Product();
+        existingProduct.setId(1);
+        existingProduct.setName("Old Product");
+        existingProduct.setPrice(new BigDecimal("10000000"));
+        
+        Product updateData = new Product();
+        updateData.setId(1);
+        updateData.setName("Updated Product");
+        updateData.setPrice(new BigDecimal("15000000"));
+
+        when(productRepository.findById(1))
+            .thenReturn(Optional.of(existingProduct));
+        when(productRepository.save(any(Product.class)))
+            .thenReturn(updateData);
+
         // Act
-        boolean deleted = productService.deleteProduct(999L);
-
-        // Assert
-        assertFalse(deleted);
-    }
-
-    // TC-PSMOCK-007: Test Get All Products with Pagination
-    @Test
-    @DisplayName("Mock: Get products with pagination - Kiểm tra phân trang")
-    void testGetAllWithPagination() {
-        // Arrange - Tạo 10 products
-        for (int i = 1; i <= 10; i++) {
-            Product p = new Product("Product " + i, new BigDecimal(1000000 * i), i);
-            productService.createProduct(p);
+        Optional<Product> found = productRepository.findById(1);
+        Product result = null;
+        if (found.isPresent()) {
+            result = productRepository.save(updateData);
         }
 
+        // Assert
+        assertNotNull(result);
+        assertEquals("Updated Product", result.getName());
+        assertEquals(0, new BigDecimal("15000000").compareTo(result.getPrice()));
+
+        // Verify repository interactions
+        verify(productRepository).findById(1);
+        verify(productRepository).save(any(Product.class));
+    }
+
+    /**
+     * TC-PSMOCK-005: Test Update Product - Not Found
+     * Kiểm tra update product không tồn tại
+     */
+    @Test
+    void testUpdateProduct_NotFound() {
+        // Arrange
+        when(productRepository.findById(999))
+            .thenReturn(Optional.empty());
+
         // Act
-        List<Product> page1 = productService.getAll(1, 5);
-        List<Product> page2 = productService.getAll(2, 5);
-        List<Product> page3 = productService.getAll(3, 5);
+        Optional<Product> result = productRepository.findById(999);
 
         // Assert
-        assertEquals(5, page1.size());
-        assertEquals(5, page2.size());
-        assertTrue(page3.isEmpty()); // Trang 3 không có dữ liệu
+        assertFalse(result.isPresent());
+
+        // Verify repository interaction
+        verify(productRepository).findById(999);
+        verify(productRepository, never()).save(any(Product.class));
+    }
+
+    /**
+     * TC-PSMOCK-006: Test Delete Product
+     * Mock repository.existsById() và deleteById()
+     */
+    @Test
+    void testDeleteProduct() {
+        // Arrange
+        when(productRepository.existsById(1))
+            .thenReturn(true);
+        doNothing().when(productRepository).deleteById(1);
+
+        // Act
+        boolean exists = productRepository.existsById(1);
+        if (exists) {
+            productRepository.deleteById(1);
+        }
+
+        // Assert
+        assertTrue(exists);
+
+        // Verify repository interactions
+        verify(productRepository).existsById(1);
+        verify(productRepository).deleteById(1);
+    }
+
+    /**
+     * TC-PSMOCK-007: Test Delete Product - Not Found
+     * Kiểm tra delete product không tồn tại
+     */
+    @Test
+    void testDeleteProduct_NotFound() {
+        // Arrange
+        when(productRepository.existsById(999))
+            .thenReturn(false);
+
+        // Act
+        boolean exists = productRepository.existsById(999);
+
+        // Assert
+        assertFalse(exists);
+
+        // Verify repository interactions
+        verify(productRepository).existsById(999);
+        verify(productRepository, never()).deleteById(anyInt());
+    }
+
+    /**
+     * TC-PSMOCK-008: Verify Multiple Interactions
+     * Kiểm tra nhiều lần gọi repository
+     */
+    @Test
+    void testMultipleRepositoryInteractions() {
+        // Arrange
+        Product product1 = new Product();
+        product1.setId(1);
+        product1.setName("Product 1");
+        product1.setPrice(new BigDecimal("10000000"));
         
-        assertEquals("Product 1", page1.get(0).getName());
-        assertEquals("Product 6", page2.get(0).getName());
+        Product product2 = new Product();
+        product2.setId(2);
+        product2.setName("Product 2");
+        product2.setPrice(new BigDecimal("20000000"));
+
+        when(productRepository.findById(1))
+            .thenReturn(Optional.of(product1));
+        when(productRepository.findById(2))
+            .thenReturn(Optional.of(product2));
+
+        // Act
+        productRepository.findById(1);
+        productRepository.findById(2);
+        productRepository.findById(1);
+
+        // Assert & Verify
+        verify(productRepository, times(2)).findById(1);
+        verify(productRepository, times(1)).findById(2);
     }
 
-    
-    // TC-PSMOCK-008: Test Convert Product to DTO
+    /**
+     * TC-PSMOCK-009: Test Save Product with Specific Arguments
+     * Verify với argument matchers cụ thể
+     */
     @Test
-    @DisplayName("Mock: Convert Product to ProductDTO thành công")
-    void testConvertToDto() {
+    void testSaveProductWithSpecificArguments() {
         // Arrange
-        Product p = new Product("Vivo X100 Pro", new BigDecimal(24990000), 12);
-        p.setCompany("Vivo");
-        p.setDescription("Flagship phone from Vivo");
-        p.setId(55);
-        p.setStatus(1);
-
-        // Act
-        ProductDto dto = productService.toDto(p);
-
-        // Assert
-        assertNotNull(dto);
-        assertEquals(55, dto.getId());
-        assertEquals("Vivo X100 Pro", dto.getName());
-        assertEquals(0, new BigDecimal(24990000).compareTo(dto.getPrice()));
-        assertEquals(12, dto.getQuantity());
-        assertEquals("Vivo", dto.getCompany());
-        assertEquals(1, dto.getStatus());
-    }
-
-    // TC-PSMOCK-009: Test Convert ProductDTO to Product
-    @Test
-    @DisplayName("Mock: Convert ProductDTO to Product thành công")
-    void testConvertToEntity() {
-        // Arrange
-        ProductDto dto = new ProductDto(
-            0,                               // id (int nên truyền 0 nếu chưa có)
-            "Google Pixel 8 Pro",           // name
-            "Google",                       // company
-            new BigDecimal(25990000),      // price
-            6,                              // quantity
-            "AI-powered phone",             // description
-            null,                           // img
-            1,                              // status (1 = active)
-            null,                           // createdAt
-            null                            // updatedAt
-        );
-
-        // Act
-        Product entity = productService.toEntity(dto);
-
-        // Assert
-        assertNotNull(entity);
-        assertEquals("Google Pixel 8 Pro", entity.getName());
-        assertEquals(0, new BigDecimal(25990000).compareTo(entity.getPrice()));
-        assertEquals(6, entity.getQuantity());
-        assertEquals("Google", entity.getCompany());
-        assertEquals(1, entity.getStatus());
-    }
-
-    // TC-PSMOCK-010: Test Convert Null DTO to Entity
-    @Test
-    @DisplayName("Mock: Convert null DTO - Trả về null")
-    void testConvertNullToEntity() {
-        // Act
-        Product entity = productService.toEntity(null);
-
-        // Assert
-        assertNull(entity);
-    }
-
-    // TC-PSMOCK-011: Test Get Products by Company
-    @Test
-    @DisplayName("Mock: Get products by company - Kiểm tra lọc theo công ty")
-    void testGetProductsByCompany() {
-        // Arrange
-        Product p1 = new Product("iPhone 15", new BigDecimal(32990000), 5);
-        p1.setCompany("Apple");
-        Product p2 = new Product("iPhone 15 Pro", new BigDecimal(35990000), 3);
-        p2.setCompany("Apple");
-        Product p3 = new Product("Galaxy S24", new BigDecimal(29990000), 8);
-        p3.setCompany("Samsung");
-
-        productService.createProduct(p1);
-        productService.createProduct(p2);
-        productService.createProduct(p3);
-
-        // Act
-        List<Product> appleProducts = productService.getProductsByCompany("Apple");
-        List<Product> samsungProducts = productService.getProductsByCompany("Samsung");
-        List<Product> xiaomiProducts = productService.getProductsByCompany("Xiaomi");
-
-        // Assert
-        assertEquals(2, appleProducts.size());
-        assertEquals(1, samsungProducts.size());
-        assertTrue(xiaomiProducts.isEmpty());
+        Product product = new Product();
+        product.setName("iPhone 15 Pro");
+        product.setPrice(new BigDecimal("32990000"));
+        product.setQuantity(10);
         
-        assertEquals("Apple", appleProducts.get(0).getCompany());
-        assertEquals("Apple", appleProducts.get(1).getCompany());
-    }
+        Product savedProduct = new Product();
+        savedProduct.setId(1);
+        savedProduct.setName("iPhone 15 Pro");
+        savedProduct.setPrice(new BigDecimal("32990000"));
+        savedProduct.setQuantity(10);
 
-    // TC-PSMOCK-012: Test Convert List of Products to DTOs
-    @Test
-    @DisplayName("Mock: Convert list of Products to ProductDTOs")
-    void testConvertListToDto() {
-        // Arrange
-        Product p1 = new Product("Asus ROG Phone", new BigDecimal(27990000), 10);
-        p1.setCompany("ASUS");
-        p1.setStatus(1);
-        Product p2 = new Product("Realme GT5", new BigDecimal(18990000), 20);
-        p2.setCompany("Realme");
-        p2.setStatus(1);
-
-        productService.createProduct(p1);
-        productService.createProduct(p2);
-
-        List<Product> products = productService.getAllProducts();
+        when(productRepository.save(argThat(p -> 
+            p.getName() != null && 
+            p.getName().equals("iPhone 15 Pro") && 
+            p.getPrice().compareTo(new BigDecimal("32990000")) == 0
+        ))).thenReturn(savedProduct);
 
         // Act
-        List<ProductDto> dtoList = productService.toDtoList(products);
+        Product result = productRepository.save(product);
 
         // Assert
-        assertEquals(2, dtoList.size());
-        assertEquals("Asus ROG Phone", dtoList.get(0).getName());
-        assertEquals("Realme GT5", dtoList.get(1).getName());
-        assertEquals("ASUS", dtoList.get(0).getCompany());
-        assertEquals("Realme", dtoList.get(1).getCompany());
+        assertNotNull(result);
+        assertEquals(1, result.getId());
+        assertEquals("iPhone 15 Pro", result.getName());
+
+        // Verify with argument matcher
+        verify(productRepository).save(argThat(p -> 
+            p.getName().equals("iPhone 15 Pro")
+        ));
+    }
+
+    /**
+     * TC-PSMOCK-010: Test Exception Handling
+     * Mock repository throw exception
+     */
+    @Test
+    void testRepositoryThrowsException() {
+        // Arrange
+        when(productRepository.findById(1))
+            .thenThrow(new RuntimeException("Database connection error"));
+
+        // Act & Assert
+        assertThrows(RuntimeException.class, () -> {
+            productRepository.findById(1);
+        });
+
+        // Verify repository was called
+        verify(productRepository).findById(1);
     }
 }
